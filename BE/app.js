@@ -18,7 +18,7 @@ const cron = require("node-cron");
 let ALLOWED_ORIGINS = [
   "https://bitblaze.pro",
   "https://www.bitblaze.pro",
-  "https://fortivault.vercel.app",
+  "https://bitblaze-three.vercel.app",
   "http://localhost:3000",
   "http://localhost:3001",
   "http://localhost:3002",
