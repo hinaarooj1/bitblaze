@@ -1,5 +1,5 @@
 {
-  "name": "fortivault",
+  "name": "bitblaze",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -86,7 +86,7 @@
   },
   "build": {
     "extends": null,
-    "appId": "fortivault.io",
+    "appId": "BitBlaze.io",
     "files": [
       "dist/**/*",
       "build/**/*",
