@@ -167,11 +167,15 @@ const Home = () => {
 
                           <div className="elementor-element elementor-element-b53c240 elementor-widget elementor-widget-text-editor" data-id="b53c240" data-element_type="widget" data-widget_type="text-editor.default" >
                             <div className="elementor-widget-container" >
-                              The Ultimate Crypto Wallet  </div>
+
+
+                              Secure. Simple. Crypto in Your Hands
+                            </div>
                           </div>
                           <div className="elementor-element elementor-element-bcb0398 elementor-widget elementor-widget-text-editor" data-id="bcb0398" data-element_type="widget" data-widget_type="text-editor.default" >
                             <div className="elementor-widget-container" >
-                              Protecting your digital assets with unmatched security and ease of use. </div>
+
+                              Your gateway to safe and effortless digital transactions.  </div>
                           </div>
                           <div className="elementor-element elementor-element-2dcc85d elementor-tablet-align-center elementor-widget elementor-widget-button" data-id="2dcc85d" data-element_type="widget" data-widget_type="button.default" >
                             <div className="elementor-widget-container" >
@@ -666,7 +670,7 @@ const Home = () => {
                       <div className="widget-content" >
                         <h4 className="widget-title">Contact Us</h4>
                         <div className="textwidget" >
-                          <p>202 Helga Springs Rd, Crawford, TN 38554</p>
+                          <p>Place de La Defense, Puteaux, 92400</p>
                           <p><a href="mailto:support@BitBlaze.io" >support@BitBlaze.io</a></p>
                         </div>
                       </div>
