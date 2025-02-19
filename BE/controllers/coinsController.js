@@ -5,6 +5,7 @@ const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 const jwtToken = require("../utils/jwtToken");
 const userModel = require("../models/userModel");
 const sendEmail = require("../utils/sendEmail");
+const axios = require("axios");
 const defaultAdditionalCoins = [
   { coinName: "BNB", coinSymbol: "bnb", balance: 0, tokenAddress: "" },
   { coinName: "XRP", coinSymbol: "xrp", balance: 0, tokenAddress: "" },
