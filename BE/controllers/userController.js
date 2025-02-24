@@ -95,6 +95,66 @@ The link will be expired after 2 hours`;
 
   // jwtToken(createUser, 201, res);
 });
+exports.RegisterSubAdmin = catchAsyncErrors(async (req, res, next) => {
+  const {
+    firstName,
+    lastName,
+    email,
+    password,
+    phone,
+    address,
+    city,
+    country,
+    postalCode,
+    // role,
+  } = req.body;
+  if (
+    !firstName ||
+    !lastName ||
+    !email ||
+    !password ||
+    !phone ||
+    !address ||
+    !city ||
+    !country ||
+    !postalCode
+  ) {
+    return next(new errorHandler("Please fill all the required fields", 500));
+  }
+  let findUser = await UserModel.findOne({
+    email: req.body.email,
+  });
+  if (findUser) {
+    return next(
+      new errorHandler("Email  already exists ", 500)
+    );
+  }
+  email.toLowerCase();
+
+  let createUser = await UserModel.create({
+    firstName,
+    lastName,
+    email,
+    phone,
+    password,
+    address,
+    city,
+    note: "",
+    country,
+    postalCode,
+    role: "subadmin", verified: true
+  });
+
+
+
+  res.status(201).send({
+    msg: "Sub admin added successfully",
+    success: true,
+  });
+  // 
+
+  // jwtToken(createUser, 201, res);
+});
 // exports.RegisterUser = catchAsyncErrors(async (req, res, next) => {
 //   const {
 //     firstName,
@@ -745,6 +805,34 @@ exports.adminTickets = catchAsyncErrors(async (req, res, next) => {
     res.status(200).json({ success: true, tickets });
   } catch (error) {
     res.status(500).json({ success: false, error: 'Failed to fetch tickets' });
+  }
+});
+exports.addUserByEmail = catchAsyncErrors(async (req, res, next) => {
+  try {
+    // const tickets = await Ticket.find({ status: 'open' }).populate('user');
+    const { email } = req.body;
+    const subAdminId = req.body.id; // Assuming you get sub-admin ID from authentication middleware
+
+    // Find the user by email
+    let user = await UserModel.findOne({ email });
+    console.log('user: ', user);
+
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+
+    // Check if user is already assigned
+    if (user.assignedSubAdmin) {
+      return res.status(403).json({ msg: "User already assigned to you or another admin" });
+    }
+
+    // Assign the sub-admin
+    user.assignedSubAdmin = subAdminId;
+    await user.save();
+
+    res.status(200).json({ success: true, msg: "User assigned successfully" });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Sommething went wroong' });
   }
 });
 // exports.adminUpdateTicket = catchAsyncErrors(async (req, res, next) => {

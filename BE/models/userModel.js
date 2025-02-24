@@ -120,6 +120,11 @@ let userSchema = new mongoose.Schema({
     default: "USD",
     enum: ["USD", "EUR"]
   },
+  assignedSubAdmin: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user", // Reference to the sub-admin
+    default: null,
+  },
   payments: [
     {
       type: {

@@ -24,7 +24,7 @@ const {
   updateMessage,
   adminUpdateTicket,
   adminTickets,
-  getUserTickets, getIndivTicket
+  getUserTickets, getIndivTicket, RegisterSubAdmin, addUserByEmail
 } = require("../controllers/userController");
 const { authorizedRoles, } = require("../middlewares/auth");
 const singleUpload = require("../middlewares/multer");
@@ -32,6 +32,8 @@ const singleUpload = require("../middlewares/multer");
 let router = express.Router();
 
 router.route("/register").post(RegisterUser);
+router.route("/registerSubAdmin").post(RegisterSubAdmin);
+router.route("/addUserByEmail").post(addUserByEmail);
 router.route("/login").post(loginUser);
 router.route("/logout").get(logoutUser);
 router.route("/allUser").get(allUser);

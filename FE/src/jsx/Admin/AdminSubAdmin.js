@@ -13,7 +13,7 @@ import { useAuthUser } from "react-auth-kit";
 
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
-const AdminUsers = () => {
+const AdminSubAdmin = () => {
   const [Users, setUsers] = useState([]);
   const [unVerified, setunVerified] = useState([]);
   const [open, setOpen] = useState(false);
@@ -28,41 +28,18 @@ const AdminUsers = () => {
     try {
       const allUsers = await allUsersApi();
 
-      const currentUser = authUser().user;
-
       if (allUsers.success) {
         let filtered;
         let unverified;
         if (authUser().user.role === "admin") {
           filtered = allUsers.allUsers.filter((user) => {
-            return user.role.includes("user") && user.verified === true;
+            return user.role.includes("subadmin") && user.verified === true;
           });
           unverified = allUsers.allUsers.filter((user) => {
-            return user.role.includes("user") && user.verified === false;
+            return user.role.includes("subadmin") && user.verified === false;
           });
-        } else if (currentUser.role === "subadmin") {
-          // Subadmin filtering logic
-          filtered = allUsers.allUsers.filter(user => {
-            return (
-              user.role === "user" &&
-              user.verified === true &&
-              (
-                user.isShared === true ||   // If user is shared, allow it
-                (user.isShared === false && user.assignedSubAdmin === currentUser._id) // If not shared but assigned, allow it
-              )
-            );
-          });
-
-          unverified = allUsers.allUsers.filter(user => {
-            return (
-              user.role === "user" &&
-              user.verified === false &&
-              (
-                user.isShared === true ||
-                (user.isShared === false && user.assignedSubAdmin === currentUser._id)
-              )
-            );
-          });
+        } else if (authUser().user.role === "subadmin") {
+          Navigate('/admin/dashboard')
         }
         setUsers(filtered.reverse());
         setunVerified(unverified.reverse());
@@ -132,6 +109,10 @@ const AdminUsers = () => {
       Navigate("/dashboard");
       return;
     }
+    if (authUser().user.role === "subadmin") {
+      Navigate("/dashboard");
+      return;
+    }
     getAllUsers();
   }, []);
   const [Active, setActive] = useState(false);
@@ -192,7 +173,7 @@ const AdminUsers = () => {
                   </div>
                 </button>
                 <h1 className="font-heading text-2xl font-light leading-normal leading-normal text-muted-800 hidden dark:text-white md:block">
-                  Users Management
+                  Sub Admin Management
                 </h1>
                 <div className="ms-auto" />
 
@@ -322,17 +303,17 @@ const AdminUsers = () => {
                         </div>
                         <div className="mx-auto max-w-sm">
                           <h4 className="font-heading text-xl font-medium leading-normal leading-normal text-muted-800 mb-1 mt-4 dark:text-white">
-                            Loading Users
+                            Loading Sub Admin
                           </h4>
                           <p className="text-muted-400 font-sans text-sm">
-                            Please wait while we load the Users.
+                            Please wait while we load the Sub Admin.
                           </p>
                         </div>
                       </div>
                     ) : (
                       <>
                         <h1 className="mb-3 bolda">
-                          Users who verified their email: {Users.length}
+                          Sub Admin who verified their email: {Users.length}
                         </h1>
                         <div className="ltablet:grid-cols-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                           {Users.map((user, index) => (
@@ -379,7 +360,7 @@ const AdminUsers = () => {
                                     {user.email}
                                   </p>
                                 </div>
-                                {authUser().user.role === "admin" ? (
+                                {/* {authUser().user.role === "admin" ? (
                                   <>
                                     <p className="mt-1 font-heading text-base font-medium leading-none">
                                       User Shared with sub admin
@@ -404,7 +385,7 @@ const AdminUsers = () => {
                                   </>
                                 ) : (
                                   ""
-                                )}
+                                )} */}
                                 <div className="flex items-center mt-5">
                                   <Link
                                     data-v-71bb21a6
@@ -431,7 +412,7 @@ const AdminUsers = () => {
                                         <path d="M230.92 212c-15.23-26.33-38.7-45.21-66.09-54.16a72 72 0 1 0-73.66 0c-27.39 8.94-50.86 27.82-66.09 54.16a8 8 0 1 0 13.85 8c18.84-32.56 52.14-52 89.07-52s70.23 19.44 89.07 52a8 8 0 1 0 13.85-8M72 96a56 56 0 1 1 56 56a56.06 56.06 0 0 1-56-56" />
                                       </g>
                                     </svg>
-                                    <span>Manage User</span>
+                                    <span>Manage Sub Admin</span>
                                   </Link>
                                 </div>
                                 <div
@@ -471,7 +452,7 @@ const AdminUsers = () => {
                                       </g>
                                     </svg>
 
-                                    <span className="ms-1">Contact User</span>
+                                    <span className="ms-1">Contact Sub Admin</span>
                                   </Link>
                                 </div>
                                 {authUser().user.role === "admin" ? (
@@ -493,7 +474,7 @@ const AdminUsers = () => {
                                           d="M24.2,12.193,23.8,24.3a3.988,3.988,0,0,1-4,3.857H12.2a3.988,3.988,0,0,1-4-3.853L7.8,12.193a1,1,0,0,1,2-.066l.4,12.11a2,2,0,0,0,2,1.923h7.6a2,2,0,0,0,2-1.927l.4-12.106a1,1,0,0,1,2,.066Zm1.323-4.029a1,1,0,0,1-1,1H7.478a1,1,0,0,1,0-2h3.1a1.276,1.276,0,0,0,1.273-1.148,2.991,2.991,0,0,1,2.984-2.694h2.33a2.991,2.991,0,0,1,2.984,2.694,1.276,1.276,0,0,0,1.273,1.148h3.1A1,1,0,0,1,25.522,8.164Zm-11.936-1h4.828a3.3,3.3,0,0,1-.255-.944,1,1,0,0,0-.994-.9h-2.33a1,1,0,0,0-.994.9A3.3,3.3,0,0,1,13.586,7.164Zm1.007,15.151V13.8a1,1,0,0,0-2,0v8.519a1,1,0,0,0,2,0Zm4.814,0V13.8a1,1,0,0,0-2,0v8.519a1,1,0,0,0,2,0Z"
                                         ></path>
                                       </svg>
-                                      <span>Delete User</span>
+                                      <span>Delete Sub Admin</span>
                                     </button>
                                   </div>
                                 ) : (
@@ -503,10 +484,10 @@ const AdminUsers = () => {
                             </div>
                           ))}
                         </div>
-                        <h1 className="mb-5 mt-5 bolda">
-                          Users who do not verified their email yet:{" "}
+                        {/* <h1 className="mb-5 mt-5 bolda">
+                          Sub Admin who do not verified their email yet:{" "}
                           {unVerified.length}
-                        </h1>
+                        </h1> */}
                         <div className="ltablet:grid-cols-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                           {unVerified.map((user, index) => (
                             <div
@@ -582,7 +563,7 @@ const AdminUsers = () => {
                                         <path d="M230.92 212c-15.23-26.33-38.7-45.21-66.09-54.16a72 72 0 1 0-73.66 0c-27.39 8.94-50.86 27.82-66.09 54.16a8 8 0 1 0 13.85 8c18.84-32.56 52.14-52 89.07-52s70.23 19.44 89.07 52a8 8 0 1 0 13.85-8M72 96a56 56 0 1 1 56 56a56.06 56.06 0 0 1-56-56" />
                                       </g>
                                     </svg>
-                                    <span>Manage User</span>
+                                    <span>Manage Sub Admin</span>
                                   </Link>
                                 </div>
                                 <div className="flex  items-center mt-2">
@@ -636,7 +617,7 @@ const AdminUsers = () => {
                                         d="M24.2,12.193,23.8,24.3a3.988,3.988,0,0,1-4,3.857H12.2a3.988,3.988,0,0,1-4-3.853L7.8,12.193a1,1,0,0,1,2-.066l.4,12.11a2,2,0,0,0,2,1.923h7.6a2,2,0,0,0,2-1.927l.4-12.106a1,1,0,0,1,2,.066Zm1.323-4.029a1,1,0,0,1-1,1H7.478a1,1,0,0,1,0-2h3.1a1.276,1.276,0,0,0,1.273-1.148,2.991,2.991,0,0,1,2.984-2.694h2.33a2.991,2.991,0,0,1,2.984,2.694,1.276,1.276,0,0,0,1.273,1.148h3.1A1,1,0,0,1,25.522,8.164Zm-11.936-1h4.828a3.3,3.3,0,0,1-.255-.944,1,1,0,0,0-.994-.9h-2.33a1,1,0,0,0-.994.9A3.3,3.3,0,0,1,13.586,7.164Zm1.007,15.151V13.8a1,1,0,0,0-2,0v8.519a1,1,0,0,0,2,0Zm4.814,0V13.8a1,1,0,0,0-2,0v8.519a1,1,0,0,0,2,0Z"
                                       ></path>
                                     </svg>
-                                    <span>Delete User</span>
+                                    <span>Delete Sub Admin</span>
                                   </button>
                                 </div>
                               </div>
@@ -692,4 +673,4 @@ const AdminUsers = () => {
   );
 };
 
-export default AdminUsers;
+export default AdminSubAdmin;
