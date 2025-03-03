@@ -481,7 +481,7 @@ const Dashboard = () => {
                 Add User
               </button> */}
               {/**/}
-              <ReactQuill
+              {/* <ReactQuill
                 className="htmlcode"
                 value={newDescription}
                 onChange={handleQuillChange}
@@ -518,7 +518,7 @@ const Dashboard = () => {
                     "Save"
                   )}
                 </button>
-              </div>
+              </div> */}
               {/*  */}
               <br />
               {newDescription === "" ||
