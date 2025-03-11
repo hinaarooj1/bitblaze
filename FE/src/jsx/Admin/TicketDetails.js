@@ -70,7 +70,7 @@ const AllTicket = () => {
 
     useEffect(() => {
         console.log('authUser().user.role: ', authUser().user.role);
-        if (authUser().user.role === "admin") {
+        if (authUser().user.role === "admin" || authUser().user.role === "subadmin") {
             setAdmin(authUser().user);
             getTickets()
             return;
