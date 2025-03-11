@@ -74,9 +74,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "GENERATE_SOURCEMAP=false react-scripts build",
+    "build": "react-scripts build",
     "test": "react-scripts test",
-    "build:css": "postcss src/jsx/pages/user/Home/bootstrapNew.css -d dist/css",
+    "build:css": "postcss src/jsx/pages/user/Home/bootstrap.css -d dist/css",
     "eject": "react-scripts eject",
     "sass": "node-sass --watch src/assets/scss/main.scss src/assets/css/style.css --source-map src/assets/css/style.css.map",
     "electron-dev": "electron .",

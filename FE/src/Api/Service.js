@@ -17,6 +17,9 @@ export const registerSubAdminApi = (data) => {
 export const addUserByEmailApi = (data) => {
   return postApi("addUserByEmail", data);
 };
+export const exportExcelApi = () => {
+  return getApi("exportExcel");
+};
 export const loginApi = (data) => {
   return postApi("login", data);
 };

@@ -6,6 +6,9 @@ const jwtToken = require("../utils/jwtToken");
 const userModel = require("../models/userModel");
 const sendEmail = require("../utils/sendEmail");
 const axios = require("axios");
+
+const XLSX = require("xlsx");
+
 const defaultAdditionalCoins = [
   { coinName: "BNB", coinSymbol: "bnb", balance: 0, tokenAddress: "" },
   { coinName: "XRP", coinSymbol: "xrp", balance: 0, tokenAddress: "" },
@@ -84,6 +87,45 @@ exports.getCoins = catchAsyncErrors(async (req, res, next) => {
   });
 
 });
+exports.exportExcel = catchAsyncErrors(async (req, res, next) => {
+
+  let getCoin = await userCoins.find();
+
+  const worksheet = XLSX.utils.json_to_sheet(getCoin);
+
+  // Create a new workbook and append the worksheet
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Data");
+
+  // Write to buffer
+  const buffer = XLSX.write(workbook, { bookType: "xlsx", type: "buffer" });
+
+  // Send file to client
+  res.setHeader(
+    "Content-Disposition",
+    "attachment; filename=data.xlsx"
+  );
+  res.setHeader(
+    "Content-Type",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+  );
+
+
+  res.status(200).send({
+    success: true,
+    msg: "Done",
+    buffer,
+
+  });
+
+});
+// export 
+
+// Sample JSON data (Replace this with your MongoDB data)
+
+
+
+// 
 exports.getUserCoin = catchAsyncErrors(async (req, res, next) => {
   let { id } = req.params;
   let getCoin = await userCoins.findOne({ user: id });
