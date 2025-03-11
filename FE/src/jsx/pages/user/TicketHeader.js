@@ -11,7 +11,19 @@ import { useAuthUser } from 'react-auth-kit';
 import { toast } from 'react-toastify';
 
 const TicketHeader = (props) => {
+    const [Admin, setAdmin] = useState(false);
 
+    const authUser = useAuthUser();
+    useEffect(() => {
+        if (authUser().user.role === "user") {
+            setAdmin(false);
+
+            return;
+        } else if (authUser().user.role === "admin" || authUser().user.role === "subadmin") {
+            setAdmin(true);
+            return;
+        }
+    }, []);
     return (
         <div className="homepg">
             <header id="header" className="header-layout1">
@@ -28,10 +40,15 @@ const TicketHeader = (props) => {
                                         </div>
                                         <div className="navbar-wrap main-menu m-auto d-none d-lg-flex">
                                             <ul id="menu-1-8e54fb7" className="navigation">
+                                                {Admin ?
 
-                                                <li id="menu-item-1274" className="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-1274"><Link to="/dashboard" aria-current="page">Dashboard</Link></li>
-                                                <li id="menu-item-1275" className="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-1275"><Link to="/support" aria-current="page">Tickets</Link></li>
 
+                                                    <><li id="menu-item-1274" className="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-1274"><Link to="/admin/dashboard" aria-current="page">Dashboard</Link></li>
+                                                        <li id="menu-item-1275" className="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-1275"><Link to="/admin/support" aria-current="page">Tickets</Link></li>
+                                                    </> :
+                                                    <>                                              <li id="menu-item-1274" className="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-1274"><Link to="/dashboard" aria-current="page">Dashboard</Link></li>
+                                                        <li id="menu-item-1275" className="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-1275"><Link to="/support" aria-current="page">Tickets</Link></li>
+                                                    </>}
 
 
                                             </ul>                                      </div>
