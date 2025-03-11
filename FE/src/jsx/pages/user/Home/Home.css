@@ -886,6 +886,12 @@ iRSNHM {
 }
 
 @media (max-width: 768px) {
+    .nnmmn {
+        display: none !important;
+    }
+}
+
+@media (max-width: 768px) {
     .hIwTsa {
         grid-template-columns: repeat(8, 1fr);
         margin-top: 0px;
