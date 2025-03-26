@@ -1,0 +1,81 @@
+/* CryptoCard.css */
+.crypto-card {
+    width: 350px;
+    height: 200px;
+    background: linear-gradient(135deg, #1e1e2f, #3a3a55);
+    color: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-family: 'Arial', sans-serif;
+    position: relative;
+    overflow: hidden;
+}
+
+.crypto-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.crypto-logo {
+    width: 50px;
+    height: 50px;
+}
+
+.crypto-balance {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.crypto-card-body {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.crypto-card-number {
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 8px 12px;
+    border-radius: 10px;
+    display: inline-block;
+}
+
+.crypto-card-footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-top: 15px;
+}
+
+.crypto-card-holder,
+.crypto-card-expiry {
+    opacity: 0.8;
+}
+
+.crypto-card::before {
+    content: '';
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    top: -40px;
+    left: -40px;
+}
+
+.crypto-card::after {
+    content: '';
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    bottom: -20px;
+    right: -20px;
+}

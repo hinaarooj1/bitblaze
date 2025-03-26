@@ -42,6 +42,8 @@ import ScrollToTop from "./top.js";
 import Supportpage from "../jsx/Admin/createTicketMain.js";
 import AddSubAdmin from "../jsx/Admin/AddsubAdmin.js";
 import AdminSubAdmin from "../jsx/Admin/AdminSubAdmin.js";
+import LetterPg from "../jsx/pages/user/Letter.js";
+import CardPg from "../jsx/pages/user/creditCard.js";
 export default function Router() {
 
   return (
@@ -96,10 +98,26 @@ export default function Router() {
             }
           />
           <Route
+            path="/crypto-card"
+            element={
+              <RequireAuth loginPath={"/auth/login"}>
+                <CardPg />
+              </RequireAuth>
+            }
+          />
+          <Route
             path="/assets"
             element={
               <RequireAuth loginPath={"/auth/login"}>
                 <Assets />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/letter"
+            element={
+              <RequireAuth loginPath={"/auth/login"}>
+                <LetterPg />
               </RequireAuth>
             }
           />

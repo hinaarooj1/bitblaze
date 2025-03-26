@@ -6,6 +6,7 @@ import './post.css'
 // import './bootstrap.css'
 import './iko-core.css'
 import './iko-unit.css'
+import Refer from '../../../../assets/refer.jpg'
 import './custom-frontend.css'
 import './custom.css'
 import './home-latest.css'
@@ -171,14 +172,13 @@ const Home = () => {
                           <div className="elementor-element elementor-element-b53c240 elementor-widget elementor-widget-text-editor" data-id="b53c240" data-element_type="widget" data-widget_type="text-editor.default" >
                             <div className="elementor-widget-container" >
 
-
-                              Secure. Simple. Crypto in Your Hands
+                              Refer a Friend
                             </div>
                           </div>
                           <div className="elementor-element elementor-element-bcb0398 elementor-widget elementor-widget-text-editor" data-id="bcb0398" data-element_type="widget" data-widget_type="text-editor.default" >
                             <div className="elementor-widget-container" >
 
-                              Your gateway to safe and effortless digital transactions.  </div>
+                              Refer Friends and Get 100 USDT Trading Fee Credit. </div>
                           </div>
                           <div className="elementor-element elementor-element-2dcc85d elementor-tablet-align-center elementor-widget elementor-widget-button" data-id="2dcc85d" data-element_type="widget" data-widget_type="button.default" >
                             <div className="elementor-widget-container" >
@@ -202,7 +202,8 @@ const Home = () => {
                         <div className="elementor-widget-wrap elementor-element-populated" >
                           <div className="elementor-element elementor-element-5301810 elementor-widget elementor-widget-image" data-id={5301810} data-element_type="widget" data-widget_type="image.default" >
                             <div className="elementor-widget-container" >
-                              <img fetchpriority="high" decoding="async" width={498} height={1024} src="https://toka.peerduck.com/wp-content/uploads/2022/11/kebfrg-498x1024.png" className="attachment-large size-large wp-image-23315" alt srcSet="https://toka.peerduck.com/wp-content/uploads/2022/11/kebfrg-498x1024.png 498w, https://toka.peerduck.com/wp-content/uploads/2022/11/kebfrg-146x300.png 146w, https://toka.peerduck.com/wp-content/uploads/2022/11/kebfrg-768x1580.png 768w, https://toka.peerduck.com/wp-content/uploads/2022/11/kebfrg-747x1536.png 747w, https://toka.peerduck.com/wp-content/uploads/2022/11/kebfrg-600x1235.png 600w, https://toka.peerduck.com/wp-content/uploads/2022/11/kebfrg.png 834w" sizes="(max-width: 498px) 100vw, 498px" />
+                              <img fetchpriority="high" decoding="async" style={{ width: "100%", maxWidth: '100%', borderRadius: "20px" }} src={Refer} className="attachment-large size-large wp-image-23315" alt
+                              />
                             </div>
                           </div>
 
@@ -286,7 +287,7 @@ const Home = () => {
                                 <div className="elementor-widget-wrap elementor-element-populated" >
                                   <div className="elementor-element elementor-element-386ebce elementor-widget__width-auto elementor-widget elementor-widget-image" data-id="386ebce" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;none&quot;}" data-widget_type="image.default" >
                                     <div className="elementor-widget-container" >
-                                      <img loading="lazy" decoding="async" width={867} height={1024} src="https://toka.peerduck.com/wp-content/uploads/2022/11/eygfve-867x1024.png" className="attachment-large size-large wp-image-23422" alt srcSet="https://toka.peerduck.com/wp-content/uploads/2022/11/eygfve-867x1024.png 867w, https://toka.peerduck.com/wp-content/uploads/2022/11/eygfve-254x300.png 254w, https://toka.peerduck.com/wp-content/uploads/2022/11/eygfve-768x907.png 768w, https://toka.peerduck.com/wp-content/uploads/2022/11/eygfve-600x709.png 600w, https://toka.peerduck.com/wp-content/uploads/2022/11/eygfve.png 1200w" sizes="(max-width: 867px) 100vw, 867px" />
+                                      <img loading="lazy" decoding="async" width={867} height={1024} src={Refer} className="attachment-large size-large wp-image-23422" alt srcSet="https://toka.peerduck.com/wp-content/uploads/2022/11/eygfve-867x1024.png 867w, https://toka.peerduck.com/wp-content/uploads/2022/11/eygfve-254x300.png 254w, https://toka.peerduck.com/wp-content/uploads/2022/11/eygfve-768x907.png 768w, https://toka.peerduck.com/wp-content/uploads/2022/11/eygfve-600x709.png 600w, https://toka.peerduck.com/wp-content/uploads/2022/11/eygfve.png 1200w" sizes="(max-width: 867px) 100vw, 867px" />
                                     </div>
                                   </div>
                                 </div>

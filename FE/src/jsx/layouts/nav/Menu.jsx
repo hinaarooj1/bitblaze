@@ -156,6 +156,20 @@ const useMenuList = () => {
 
         },
         {
+            title: 'Letter',
+            classsChange: 'mm-active',
+            to: '/letter',
+            iconStyle: <i className="material-symbols-outlined">lab_profile</i>,
+
+        },
+        {
+            title: 'Crypto Card',
+            classsChange: 'mm-active',
+            to: '/crypto-card',
+            iconStyle: <i className="material-symbols-outlined">monetization_on</i>,
+
+        },
+        {
             title: 'Assets',
             classsChange: 'mm-active',
             to: '/assets',
