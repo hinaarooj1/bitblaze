@@ -240,7 +240,7 @@ function Register(props) {
                     <img style={{ width: "80px" }} src={LogoNew} alt="" />
                   </Link>
                 </div>
-                <h4 className="text-center mb-4 ">Sign up your account</h4>
+                <h4 className="text-center mb-4 ">Sign up  </h4>
                 {props.errorMessage && (
                   <div className='text-danger'>
                     {props.errorMessage}
