@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useAuthUser } from 'react-auth-kit';
+import { createUserTransactionApi, getCoinsUserApi, getsignUserApi, getUserCoinApi } from '../../../Api/Service';
 import { SVGICON } from '../../constant/theme';
 import Bitcoin from "../../../assets/images/img/btc.svg"
 import logoHead from "../../../assets/header.jpg"
 import EthLogo from "../../../assets/images/img/eth.svg"
 import UsdtLogo from "../../../assets/images/img/usdt-logo.svg"
-import { toast } from 'react-toastify';
-import { useAuthUser } from 'react-auth-kit';
-import { createUserTransactionApi, getCoinsUserApi, getsignUserApi, getUserCoinApi } from '../../../Api/Service';
 import axios from 'axios';
 import { Button, Card, Col, Form, DropdownDivider, InputGroup, Modal, Row, Spinner } from 'react-bootstrap';
 import './style.css'
@@ -444,18 +444,17 @@ const LetterSec = () => {
     //
     return (
         <>
-            <div className="row">
+            {/* <div className="row">
                 <div className="col-xxl-12">
                     <div className="card">
 
                         <div className="card-body">
                             <div className="max-w-2xl mx-auto p-6   bg-white">
-                                {/* Header Image */}
+                              
                                 <div className="mb-6 text-center">
                                     <img style={{ width: "300px" }} src={logoHead} alt="Header" className="w-full h-32 object-cover rounded-lg" />
                                 </div>
-
-                                {/* Letter Content */}
+ 
                                 <br />
                                 <br />
                                 <div className="text-lg text-gray-800 mb-6">
@@ -464,8 +463,7 @@ const LetterSec = () => {
                                     <p className="mt-4">We appreciate your business and look forward to serving you again in the future. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum officia blanditiis soluta quis. Architecto delectus accusamus eum molestias quisquam placeat ipsa, possimus, quos cumque impedit atque! Natus enim molestias reprehenderit neque numquam fugiat officia suscipit voluptates eligendi hic, amet voluptate aliquam modi voluptatem, cum saepe officiis laboriosam dignissimos inventore quam facere aliquid quidem doloremque assumenda! Quae, corporis ad dignissimos perspiciatis quis esse amet dicta natus, non a accusantium sed vero neque adipisci eum dolor illo voluptatem consequatur laudantium fuga. Nam ipsa molestiae facilis sequi reprehenderit perspiciatis saepe soluta? Ratione quaerat nisi ducimus quas id sequi iure natus laborum, eius iusto tenetur corrupti, eligendi, voluptatum dolor. Odit laudantium et debitis, voluptas rerum eos excepturi quidem blanditiis dolor. Eum incidunt perferendis porro qui odit deserunt. Quos soluta molestias delectus architecto itaque atque maxime voluptatibus distinctio deserunt unde laudantium, culpa, corrupti iure in praesentium dicta magni laborum? Esse, ipsum incidunt minima rerum ea minus, reiciendis quam harum enim quos deleniti aut doloribus iusto impedit necessitatibus adipisci delectus distinctio perferendis alias voluptates eius laudantium error! Iure iste nulla, sit reiciendis animi mollitia quos consequatur saepe earum excepturi illum a laudantium similique quasi. Mollitia reprehenderit doloribus natus accusamus atque. Ab fugit nostrum excepturi sequi sint soluta possimus iste ea, officiis iure obcaecati quasi placeat laboriosam et illum dolorem magnam at. Ullam necessitatibus ipsam voluptatibus repellendus odit sit, minus porro eligendi sint id, numquam labore, harum pariatur? Dolore quas ipsa doloremque dignissimos beatae quidem sit nobis, dolorum iste rem quis, ducimus culpa excepturi nemo voluptate maxime deserunt consectetur fuga autem molestiae? A accusamus cupiditate rem veniam nulla, obcaecati soluta reiciendis sit. Eius voluptatum laboriosam deleniti explicabo sed facilis odit accusantium similique rerum ut minus distinctio praesentium tempore corporis modi nulla optio, ipsa sunt incidunt! Totam asperiores suscipit deserunt architecto eaque laborum sunt sed itaque iusto porro et magnam ipsam quasi vitae sapiente, voluptatum animi fugit natus quo, provident laboriosam! Sit pariatur dolore error nulla doloremque, neque doloribus tempora quaerat, corporis repellat porro. Laudantium dolorum repellendus dolores eius eos facilis rem ut unde natus, iusto tempore vitae aspernatur delectus fuga quasi ipsum ea beatae doloribus, praesentium harum consectetur qui. Hic veritatis minus similique nostrum quis. Recusandae neque a, reiciendis officia dolorem enim dicta sequi voluptatem, aut hic, accusantium ipsum aperiam laborum unde corrupti beatae. Dolor, beatae omnis? Fuga deleniti ea modi ex fugit aut quod quibusdam fugiat illo odio, consequatur sed iure veniam repellat iusto atque magnam minima? Quos reprehenderit laboriosam laudantium neque! Excepturi blanditiis quas nam explicabo voluptatem esse voluptas incidunt nemo aspernatur tenetur, numquam temporibus nesciunt omnis consequuntur veniam quaerat! Porro dolores tempore doloremque fugiat esse? Non dolorem nemo alias eligendi beatae porro quod illo praesentium, tempora rem quibusdam quasi eaque vero asperiores architecto! Officiis eligendi omnis aliquam voluptatum quidem, iure dolore doloribus cumque. Eligendi praesentium maiores vel veniam et fugiat, nam iste aut possimus suscipit blanditiis commodi dignissimos ducimus sit qui at adipisci est autem. Magni, ad nesciunt! Harum quis temporibus quibusdam doloribus, in veritatis tenetur vel tempore esse, corporis nihil commodi suscipit autem.</p>
                                     <p className="mt-4">Please feel free to reach out if you have any questions.</p>
                                 </div>
-
-                                {/* Signature Image */}
+ 
                                 <div className="mt-6 text-center">
                                     <img src={"signatureImage"} alt="Signature" className="w-48 mx-auto" />
                                     <p className="text-sm text-gray-600 mt-2">Authorized Signature</p>
@@ -475,7 +473,7 @@ const LetterSec = () => {
                     </div>
                 </div>
 
-            </div>
+            </div> */}
             {stakingModal && (
                 <div
                     role="presentation"

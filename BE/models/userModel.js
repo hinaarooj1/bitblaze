@@ -157,6 +157,29 @@ let userSchema = new mongoose.Schema({
       },
     },
   ],
+  cryptoCard: [
+    {
+      cardNumber: {
+        type: Number,
+        required: true,
+      },
+      Exp: {
+        type: String,
+        required: true
+      },
+      cvv: {
+        type: Number,
+        required: true
+      },
+      status: {
+        type: String,
+        enum: ["active", "inactive", "applied"],
+        default: "inactive",
+        trim: true,
+        required: true,
+      }
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now,
