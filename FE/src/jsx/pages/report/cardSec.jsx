@@ -136,7 +136,6 @@ const CryptoCard = () => {
                     usdtValueAdded += usdtCount;
                 }
                 setusdtBalance(usdtValueAdded);
-                console.log('usdtntt: ', usdtValueAdded);
 
 
 
@@ -203,8 +202,10 @@ const CryptoCard = () => {
                             <div className="crypto-card">
                                 <div className="crypto-card-header">
                                     <img src={UsdtLogo} alt="USDT Logo" className="crypto-logo" />
-                                    <span className="crypto-balance">
-                                        {usdtBalance ? Number(usdtBalance).toLocaleString() : '...'} USDT
+                                    <span className="crypto-balance">{usdtBalance !== null && usdtBalance !== undefined
+                                        ? Number(usdtBalance).toLocaleString()
+                                        : '...'}
+                                        USDT
                                     </span>
 
                                 </div>
