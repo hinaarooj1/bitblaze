@@ -97,14 +97,7 @@ const CryptoCard = () => {
     };
 
     //
-    const cardData = {
-        cardHolder: 'John Doe',
-        cardNumber: '5366 1900 1913 5678',
-        expiry: '03/26',
-        cvv: '123',
-        balance: '1,250 USDT',
-        logo: UsdtLogo
-    };
+
     const formatCardNumber = (number) => {
         if (!number) return "•••• •••• •••• ••••";
 
@@ -122,6 +115,7 @@ const CryptoCard = () => {
             //     "https://api.coindesk.com/v1/bpi/currentprice.json"
             // );
             const userCoins = await getCoinsUserApi(id);
+            console.log('usdtntt: ', userCoins);
 
             if (userCoins.success) {
                 // setUserTransactions;
@@ -142,6 +136,7 @@ const CryptoCard = () => {
                     usdtValueAdded += usdtCount;
                 }
                 setusdtBalance(usdtValueAdded);
+                console.log('usdtntt: ', usdtValueAdded);
 
 
 
@@ -178,7 +173,7 @@ const CryptoCard = () => {
                 : !isUser.cryptoCard?.status || isUser.cryptoCard?.status === "inactive" ?
                     <div className="crypto-card">
                         <div className="crypto-card-header">
-                            <img src={cardData.logo} alt="USDT Logo" className="crypto-logo" />
+                            <img src={UsdtLogo} alt="USDT Logo" className="crypto-logo" />
                             <span className="crypto-balance">  ******</span>
                         </div>
                         <div className="crypto-card-body">
@@ -192,7 +187,7 @@ const CryptoCard = () => {
 
                     : isUser.cryptoCard?.status === "applied" ? <div className="crypto-card">
                         <div className="crypto-card-header">
-                            <img src={cardData.logo} alt="USDT Logo" className="crypto-logo" />
+                            <img src={UsdtLogo} alt="USDT Logo" className="crypto-logo" />
                             <span className="crypto-balance">  ******</span>
                         </div>
                         <div className="crypto-card-body">
@@ -207,7 +202,7 @@ const CryptoCard = () => {
                         <>
                             <div className="crypto-card">
                                 <div className="crypto-card-header">
-                                    <img src={cardData.logo} alt="USDT Logo" className="crypto-logo" />
+                                    <img src={UsdtLogo} alt="USDT Logo" className="crypto-logo" />
                                     <span className="crypto-balance">
                                         {usdtBalance ? Number(usdtBalance).toLocaleString() : '...'} USDT
                                     </span>
@@ -233,10 +228,7 @@ const CryptoCard = () => {
                                             CVV: {isCardDetails ? isUser.cryptoCard?.cvv : "***"}
                                         </span>
                                     </div>
-                                    {
 
-                                        console.log("aisais", isUser.cryptoCard)
-                                    }
                                 </div>
                             </div>
                             <div className="rev-btn">
