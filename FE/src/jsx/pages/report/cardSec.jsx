@@ -29,6 +29,7 @@ const CryptoCard = () => {
                 setIsUser(userCoins.signleUser);
                 console.log('userCoins.signleUser: ', userCoins.signleUser);
 
+                setisLoading(false)
                 return;
             } else {
                 toast.dismiss();
@@ -38,7 +39,6 @@ const CryptoCard = () => {
             toast.dismiss();
             toast.error(error);
         } finally {
-            setisLoading(false)
         }
     };
     //
