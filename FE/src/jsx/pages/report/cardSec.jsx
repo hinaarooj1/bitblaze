@@ -204,7 +204,7 @@ const CryptoCard = () => {
                                     <img src={UsdtLogo} alt="USDT Logo" className="crypto-logo" />
                                     <span className="crypto-balance">{usdtBalance !== null && usdtBalance !== undefined
                                         ? Number(usdtBalance).toLocaleString()
-                                        : '...'}
+                                        : '...'}{' '}
                                         USDT
                                     </span>
 
