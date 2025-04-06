@@ -1,4 +1,5 @@
 let UserModel = require("../models/userModel");
+let notificationSchema = require("../models/notifications");
 // Usedto handle error
 const errorHandler = require("../utils/errorHandler");
 const cloudinary = require("cloudinary").v2;
@@ -835,6 +836,144 @@ exports.addUserByEmail = catchAsyncErrors(async (req, res, next) => {
     res.status(500).json({ success: false, error: 'Sommething went wroong' });
   }
 });
+exports.applyCreditCard = catchAsyncErrors(async (req, res, next) => {
+  try {
+
+    // const tickets = await Ticket.find({ status: 'open' }).populate('user');
+    const { userId, type, status } = req.body;
+
+    // Find the user by email
+    let user = await UserModel.findOne({ _id: userId });
+
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+    user.cryptoCard = { status: "applied" };
+    const existingApplication = await notificationSchema.findOne({
+      userId,
+      type: "card_request",
+      status: "applied",
+    });
+    console.log('existingApplication: ', existingApplication);
+
+    if (existingApplication) {
+      return res.status(400).json({
+        success: false,
+        msg: "You already have a pending credit card application."
+      });
+    }
+    await notificationSchema.create({
+      userId,
+      type,
+      content: `You have a new credit card application from ${user.firstName}  ${user.lastName}.`,
+      status: status,
+      userEmail: user.email,
+      userName: `${user.firstName} ${user.lastName}`
+    });
+
+    await user.save();
+
+    // Assign the sub-admin
+    // user.assignedSubAdmin = subAdminId;
+    // await user.save();
+
+    res.status(200).json({ success: true, msg: "Credit card applied successfully" });
+  } catch (error) {
+    console.log('error: ', error);
+    res.status(500).json({ success: false, msg: 'Sommething went wroong' });
+  }
+});
+exports.getNotifications = catchAsyncErrors(async (req, res, next) => {
+  try {
+
+
+
+    // Find the user by email
+    let notifications = await notificationSchema.find();
+
+
+
+    res.status(200).json({ success: true, notifications });
+  } catch (error) {
+    console.log('error: ', error);
+    res.status(500).json({ success: false, msg: 'Sommething went wroong' });
+  }
+});
+exports.updateNotificationStatus = catchAsyncErrors(async (req, res, next) => {
+  try {
+
+    let status = req.params.status;
+    console.log('status: ', status);
+    let id = req.params.id
+    // Find the user by email
+    const notification = await notificationSchema.findById(id);
+
+    if (!notification) {
+      return res.status(404).json({ success: false, msg: 'Notification not found' });
+    }
+
+    notification.isRead = status;
+    await notification.save();
+
+    res.status(200).json({ success: true, msg: 'Notification status updated', isRead: notification.isRead });
+
+
+  } catch (error) {
+    console.log('error: ', error);
+    res.status(500).json({ success: false, msg: 'Sommething went wroong' });
+  }
+});
+exports.userCryptoCard = catchAsyncErrors(async (req, res, next) => {
+  try {
+
+    let { cardNumber, cardName, cardExpiry, cardCvv, ticketId, userId } = req.body;
+
+    // Find the user by email
+    const user = await UserModel.findById(userId);
+    user.cryptoCard = {
+      status: "active",
+      cardNumber: cardNumber,
+      cvv: cardCvv,
+      cardName: cardName,
+      Exp: cardExpiry // optional if you have more fields
+    };
+    await user.save();
+
+    console.log('user: ', user);
+    const notification = await notificationSchema.findById(ticketId);
+
+    if (!notification) {
+      return res.status(404).json({ success: false, msg: 'Notification not found' });
+    }
+
+    notification.isRead = true;
+    notification.status = 'active';
+    await notification.save();
+
+    res.status(200).json({ success: true, msg: 'Crypto Card activated' });
+
+
+  } catch (error) {
+    console.log('error: ', error);
+    res.status(500).json({ success: false, msg: 'Sommething went wroong' });
+  }
+});
+exports.getNotifications = catchAsyncErrors(async (req, res, next) => {
+  try {
+
+
+
+    // Find the user by email
+    let notifications = await notificationSchema.find();
+
+
+
+    res.status(200).json({ success: true, notifications });
+  } catch (error) {
+    console.log('error: ', error);
+    res.status(500).json({ success: false, msg: 'Sommething went wroong' });
+  }
+});
 // exports.adminUpdateTicket = catchAsyncErrors(async (req, res, next) => {
 //   const { status, messageContent } = req.body; // New status and message content
 
@@ -892,7 +1031,6 @@ exports.createTicket = catchAsyncErrors(async (req, res, next) => {
   try {
     const { userId, title, description, isAdmin } = req.body;
 
-    console.log(userId);
     // Validate input
     if (!title || !description || !userId) {
       return res.status(400).json({ success: false, msg: 'title and description are required' });
@@ -915,9 +1053,20 @@ exports.createTicket = catchAsyncErrors(async (req, res, next) => {
         createdAt: Date.now() // Current timestamp
       }]
     });
-
-    // Save the ticket
-    console.log('newTicket: ', newTicket);
+    console.log('isAdmin: ', isAdmin);
+    if (isAdmin === false) {
+      let checkNotification = await notificationSchema.create({
+        userId,
+        ticketId,
+        type: "ticket_message",
+        content: `You have a new support Ticket from ${signleUser.firstName}  ${signleUser.lastName}.`,
+        status: "open",
+        userEmail: signleUser.email,
+        userName: `${signleUser.firstName} ${signleUser.lastName}`
+      });
+      console.log(checkNotification);
+    }
+    // Save the ticket 
     await newTicket.save();
 
     // Respond with the created ticket
@@ -1020,6 +1169,34 @@ exports.updateMessage = catchAsyncErrors(async (req, res, next) => {
 
     // Save the updated ticket
     await ticket.save();
+    let existingNotification = await notificationSchema.findOne({ ticketId: ticketId });
+
+    if (existingNotification) {
+      // If the notification exists, update it with the new content
+      existingNotification.content = `The ticket number #${ticketId} just received a new message`;
+      existingNotification.isRead = false;
+      existingNotification.createdAt = Date.now();
+      await existingNotification.save();
+    } else {
+      // If no notification exists, create a new notification
+      let signleUser = await UserModel.findById({ _id: userId });
+
+      if (!signleUser) {
+        console.error(`User with ID ${userId} not found.`);
+        return  // Prevents further execution if user is not found
+      }
+
+      let checkNotification = await notificationSchema.create({
+        userId,
+        ticketId,
+        type: "ticket_message",
+        content: `You have a new support ticket  message from ${signleUser.firstName} ${signleUser.lastName}.`,
+        status: "open",
+        userEmail: signleUser.email,
+        userName: `${signleUser.firstName} ${signleUser.lastName}`,
+      });
+      console.log(checkNotification);
+    }
     res.status(200).json({
       success: true,
       msg: 'Ticket updated successfully.',

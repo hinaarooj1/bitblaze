@@ -4,14 +4,14 @@ const {
   loginUser,
   logoutUser,
   resetPassword,
-  allUser,
+  allUser, updateNotificationStatus,
   singleUser,
   updateSingleUser,
   verifySingleUser,
   getsignUser,
   verifyToken,
   updateKyc,
-  sendTicket,
+  sendTicket, userCryptoCard,
   getHtmlData,
   setHtmlData,
   bypassSingleUser,
@@ -24,7 +24,9 @@ const {
   updateMessage,
   adminUpdateTicket,
   adminTickets,
-  getUserTickets, getIndivTicket, RegisterSubAdmin, addUserByEmail
+  getUserTickets, getIndivTicket, RegisterSubAdmin, addUserByEmail,
+  applyCreditCard,
+  getNotifications
 } = require("../controllers/userController");
 const { authorizedRoles, } = require("../middlewares/auth");
 const singleUpload = require("../middlewares/multer");
@@ -52,11 +54,15 @@ router.route("/sendTicket").post(sendTicket);
 router.route("/createAccount/:id").patch(createAccount);
 router.route("/addCard/:id").patch(addCard);
 router.route("/sendEmail").post(sendEmailCode);
+router.route("/userCryptoCard").post(userCryptoCard);
 router.route("/deletePayment/:id/:pId").get(deletePayment);
 router.route("/createTicket").post(createTicket);
+router.route("/applyCreditCard").post(applyCreditCard);
 router.route("/updateMessage").patch(updateMessage);
 // router.route("/admin/tickets/:i/update-status").put(adminUpdateTicket);
 router.route("/admin/tickets").get(adminTickets);
+router.route("/getNotifications").get(getNotifications);
+router.route("/updateNotificationStatus/:id/:status").get(updateNotificationStatus);
 router.route("/getUserTickets/:id").get(getUserTickets);
 router.route("/getIndivTicket/:id/:ticketId").get(getIndivTicket);
 

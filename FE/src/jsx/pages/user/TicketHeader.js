@@ -9,10 +9,13 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Dropdown, Spinner } from 'react-bootstrap';
 import { useAuthUser } from 'react-auth-kit';
 import { toast } from 'react-toastify';
+import AdminHeader from '../../Admin/adminHeader';
 
 const TicketHeader = (props) => {
     const [Admin, setAdmin] = useState(false);
+    let toggleBar = () => {
 
+    }
     const authUser = useAuthUser();
     useEffect(() => {
         if (authUser().user.role === "user") {
@@ -52,6 +55,10 @@ const TicketHeader = (props) => {
 
 
                                             </ul>                                      </div>
+                                        <div className='main-head-not '>
+                                            {Admin ?
+                                                <AdminHeader toggle={toggleBar} pageName="" /> : ""}
+                                        </div>
                                         <div className="header-action header-right header-profile2">
                                             <Dropdown.Toggle to={"#"} className="nav-link i-false  noap" as="div">
                                                 <div className="header-info2 d-flex align-items-center">

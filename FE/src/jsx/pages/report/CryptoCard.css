@@ -16,6 +16,21 @@
     overflow: hidden;
 }
 
+.cc-button:hover {
+    transition: all 0.3s ease;
+    background-color: #029380;
+}
+
+.cc-button:disabled {
+    opacity: 0.7;
+    cursor: default;
+}
+
+.cc-button {
+    transition: all 0.3s ease;
+
+}
+
 .crypto-card-header {
     display: flex;
     justify-content: space-between;
