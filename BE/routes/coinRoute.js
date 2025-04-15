@@ -9,7 +9,7 @@ const {
   updateTransaction,
   getTransactions,
   getEachUser,
-  getCoinsUser,
+  getCoinsUser,UnassignUser,
   getUserCoin,
   deleteEachUser,
   createUserTransaction,
@@ -51,5 +51,6 @@ router.route("/updateTransaction/:id").patch(updateTransaction);
 router.route("/getTransactions").get(getTransactions);
 router.route("/getEachUser/:id").get(getEachUser);
 router.route("/deleteEachUser/:id").delete(deleteEachUser);
+router.route("/UnassignUser/:id").delete(UnassignUser);
 
 module.exports = router;
