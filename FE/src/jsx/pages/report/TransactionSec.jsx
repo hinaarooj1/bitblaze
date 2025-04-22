@@ -64,6 +64,7 @@ const TransactionSec = () => {
             //     "https://api.coindesk.com/v1/bpi/currentprice.json"
             // );
             const allTransactions = await getUserCoinApi(id);
+            console.log('allTransactions: ', allTransactions.getCoin.transactions);
             if (allTransactions.success) {
                 setUserTransactions(allTransactions.getCoin.transactions.reverse());
                 let val = 0;

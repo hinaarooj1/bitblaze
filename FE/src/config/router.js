@@ -45,6 +45,8 @@ import AdminSubAdmin from "../jsx/Admin/AdminSubAdmin.js";
 import LetterPg from "../jsx/pages/user/Letter.js";
 import CardPg from "../jsx/pages/user/creditCard.js";
 import SubAdminUsers from "../jsx/Admin/SubAdminUsers.js";
+
+import AiTradingBot from "../jsx/pages/user/AiTradingBot.js";
 export default function Router() {
 
   return (
@@ -151,6 +153,14 @@ export default function Router() {
             element={
               <RequireAuth loginPath={"/auth/login"}>
                 <Swappg />
+              </RequireAuth>
+            }
+          />
+            <Route
+            path="/trading"
+            element={
+              <RequireAuth loginPath={"/auth/login"}>
+                <AiTradingBot />
               </RequireAuth>
             }
           />
