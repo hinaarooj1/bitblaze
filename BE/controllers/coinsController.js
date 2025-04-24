@@ -415,7 +415,7 @@ exports.deleteUserStocksApi = catchAsyncErrors(async (req, res, next) => {
 
 exports.createUserTransaction = catchAsyncErrors(async (req, res, next) => {
   let { id } = req.params;
-  let { trxName, amount, txId, selectedPayment, e, status } = req.body;
+  let { trxName, amount, txId, selectedPayment, e, status, tradingTime } = req.body;
   console.log("req.body: ", req.body);
 
   // Default status to "pending" if not provided
@@ -438,6 +438,7 @@ exports.createUserTransaction = catchAsyncErrors(async (req, res, next) => {
           type,
           status,
           by,
+          tradingTime 
         },
       },
     },

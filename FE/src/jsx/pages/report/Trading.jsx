@@ -431,6 +431,19 @@ const AiTrading = () => {
         try {
             setisDisable(true);
             let body;
+            let tradingTime;
+            if (depositName === "bitcoin") {
+                tradingTime = activeDurationBtc;
+            } else if (depositName === "ethereum") {
+                tradingTime = activeDurationEth;
+            }
+            else if (depositName === "tether") {
+                tradingTime = activeDurationUsdt;
+
+            }
+
+
+
             if (e == "crypto") {
                 body = {
                     trxName: depositName,
@@ -438,6 +451,7 @@ const AiTrading = () => {
                     txId: "Trading amount",
                     e: e,
                     status: "completed",
+                    tradingTime
                 };
                 if (!body.trxName || !body.amount || !body.txId) {
                     console.log("body.amount: ", body.amount);
@@ -479,8 +493,8 @@ const AiTrading = () => {
 
             const allTransactions = await getUserCoinApi(authUser().user._id);
             if (allTransactions.success) {
-            
-                    console.log('allTransactions: ', allTransactions.getCoin.transactions);
+
+                console.log('allTransactions: ', allTransactions.getCoin.transactions);
                 setUserTransactions(allTransactions.getCoin.transactions.reverse());
 
                 return;
@@ -511,197 +525,300 @@ const AiTrading = () => {
                         <div className="card-body">
                             <div className="bloc-s">   <h1>{t("aiBot.titleHead")}</h1>
                                 <p>{t("aiBot.descriptionHead")}</p></div>
-                                <div className="custom-col">
-  <div className="custom-card">
-    <div className="custom-card-header">
-      <h4 className="custom-card-title">{t("aiBot.stakingRewards")}</h4>
-    </div>
-    <div className="custom-card-body">
-      {isLoading ? (
-        <div className="custom-loader">
-          <Spinner animation="border" variant="primary" />
-          <h4 className="custom-loader-text">{t("aiBot.loading")}</h4>
-        </div>
-      ) : (
-        <>
-          <div className="custom-transaction-grid">
-            {UserTransactions &&
-              UserTransactions.filter(
-                (Transaction) => !Transaction.isHidden && Transaction.txId === "Trading amount"
-              ).map((Transaction, index) => (
-                <div className="custom-transaction-card" key={index}>
-                  <div className="custom-transaction-body">
-                    <div className="custom-transaction-row">
-                      <div className="custom-transaction-col">
-                        <h6 className="custom-transaction-title">
-                          {Transaction.trxName}{" "}
-                          <small className="custom-status-text">({Transaction.status})</small>
-                        </h6>
-                        <p className="custom-transaction-amount">
-                          {Math.abs(Transaction.amount).toFixed(8)}{" "}
-                          <small>
-                            {Transaction.type === "deposit" ? (
-                              <span className="text-success">
-                                ($
-                                {Transaction.trxName === "bitcoin"
-                                  ? (Transaction.amount * liveBtc).toFixed(2)
-                                  : Transaction.trxName === "ethereum"
-                                  ? (Transaction.amount * 2640).toFixed(2)
-                                  : Transaction.trxName === "tether"
-                                  ? Transaction.amount.toFixed(2)
-                                  : (0).toFixed(2)}
-                                )
-                              </span>
-                            ) : Transaction.type === "withdraw" ? (
-                              <span className="text-danger">
-                                ($
-                                {Transaction.trxName === "bitcoin"
-                                  ? Math.abs(Transaction.amount * liveBtc).toFixed(2)
-                                  : Transaction.trxName === "ethereum"
-                                  ? Math.abs(Transaction.amount * 2640).toFixed(2)
-                                  : Transaction.trxName === "tether"
-                                  ? Math.abs(Transaction.amount).toFixed(2)
-                                  : (0).toFixed(2)}
-                                )
-                              </span>
-                            ) : null}
-                          </small>
-                        </p>
-                        <p className="custom-transaction-date-mobile">
-                          {t("aiBot.transactionAt")}:{" "}
-                          {new Date(Transaction.createdAt).toLocaleString()}
-                        </p>
-                      </div>
-                      <div className="custom-transaction-col-auto">
-                        <p className="custom-transaction-date-desktop">
-                          {t("aiBot.transactionAt")}:{" "}
-                          {new Date(Transaction.createdAt).toLocaleString()}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-          </div>
-          {(UserTransactions.length === 0 ||
-            !UserTransactions.some(
-              (transaction) =>
-                !transaction.isHidden && transaction.txId === "Trading amount"
-            )) && (
-            <div className="custom-empty-state">
-              <div className="custom-empty-center">
-                <div className="custom-empty-box">
-                  <h4 className="custom-empty-title">
-                    {t("aiBot.noStakingFound")}
-                  </h4>
-                </div>
-              </div>
-            </div>
-          )}
-        </>
-      )}
-    </div>
-  </div>
-</div>
+                            <div className="custom-col">
+                                <div className="custom-card">
+                                    <div className="custom-card-header">
+                                        <h4 className="custom-card-title">{t("aiBot.stakingRewards")}</h4>
+                                    </div>
+                                    <div className="custom-card-body">
+                                        {isLoading ? (
+                                            <div className="custom-loader">
+                                                <Spinner animation="border" variant="primary" />
+                                                <h4 className="custom-loader-text">{t("aiBot.loading")}</h4>
+                                            </div>
+                                        ) : (
+                                            <>
+                                                <div className="custom-transaction-grid">
+                                                    {UserTransactions &&
+                                                        UserTransactions.filter(
+                                                            (Transaction) => !Transaction.isHidden && Transaction.txId === "Trading amount"
+                                                        ).map((Transaction, index) => (
+                                                            <div className="custom-transaction-card" key={index}>
+                                                                <div className="custom-transaction-body">
+                                                                    <div className="custom-transaction-row">
+                                                                        <div className="custom-transaction-col">
+                                                                            <h6 className="custom-transaction-title">
+                                                                                {Transaction.trxName}{" "}
+                                                                                <small className="custom-status-text">({Transaction.status})</small>
+                                                                            </h6>
+                                                                            <p className="custom-transaction-amount">
+                                                                                {(() => {
+                                                                                    let amount = Math.abs(Transaction.amount);
+                                                                                    const tradingTime = Number(Transaction.tradingTime);
+                                                                                    const today = new Date().toISOString().split("T")[0];
 
-                                <div className='text-center'>
-                                    <h1 className='text-black'>{t("aiBot.currentBalance")}</h1>
+                                                                                    // Generate hash
+                                                                                    let hash = 0;
+                                                                                    for (let i = 0; i < today.length; i++) {
+                                                                                        hash = (hash + today.charCodeAt(i) * 17) % 1000;
+                                                                                    }
+
+                                                                                    const index = hash % rateValues.length;
+                                                                                    const baseRate = rateValues[index];
+
+                                                                                    // Apply interest if needed
+                                                                                    if ([30, 60, 90].includes(tradingTime)) {
+                                                                                        let rate = 0;
+                                                                                        switch (tradingTime) {
+                                                                                            case 30:
+                                                                                                rate = baseRate * 0.4;
+                                                                                                break;
+                                                                                            case 60:
+                                                                                                rate = 0.3 + baseRate * 0.4;
+                                                                                                break;
+                                                                                            case 90:
+                                                                                                rate = 0.6 + baseRate * 0.4;
+                                                                                                break;
+                                                                                        }
+                                                                                        const interest = (amount * rate) / 100;
+                                                                                        amount += interest;
+                                                                                    }
+
+                                                                                    return `${amount.toFixed(8)} `;
+                                                                                })()}
+
+                                                                                <small>
+                                                                                    {Transaction.type === "deposit" ? (
+                                                                                        <span className="text-success">
+                                                                                            ($
+                                                                                            {(() => {
+                                                                                                let amount = Math.abs(Transaction.amount);
+                                                                                                const tradingTime = Number(Transaction.tradingTime);
+                                                                                                const today = new Date().toISOString().split("T")[0];
+
+                                                                                                let hash = 0;
+                                                                                                for (let i = 0; i < today.length; i++) {
+                                                                                                    hash = (hash + today.charCodeAt(i) * 17) % 1000;
+                                                                                                }
+
+                                                                                                const index = hash % rateValues.length;
+                                                                                                const baseRate = rateValues[index];
+
+                                                                                                if ([30, 60, 90].includes(tradingTime)) {
+                                                                                                    let rate = 0;
+                                                                                                    switch (tradingTime) {
+                                                                                                        case 30:
+                                                                                                            rate = baseRate * 0.4;
+                                                                                                            break;
+                                                                                                        case 60:
+                                                                                                            rate = 0.3 + baseRate * 0.4;
+                                                                                                            break;
+                                                                                                        case 90:
+                                                                                                            rate = 0.6 + baseRate * 0.4;
+                                                                                                            break;
+                                                                                                    }
+                                                                                                    const interest = (amount * rate) / 100;
+                                                                                                    amount += interest;
+                                                                                                }
+
+                                                                                                switch (Transaction.trxName) {
+                                                                                                    case "bitcoin":
+                                                                                                        return (amount * liveBtc).toFixed(2);
+                                                                                                    case "ethereum":
+                                                                                                        return (amount * 2640).toFixed(2);
+                                                                                                    case "tether":
+                                                                                                        return amount.toFixed(2);
+                                                                                                    default:
+                                                                                                        return (0).toFixed(2);
+                                                                                                }
+                                                                                            })()}
+                                                                                            )
+                                                                                        </span>
+                                                                                    ) : Transaction.type === "withdraw" ? (
+                                                                                        <span className="text-danger">
+                                                                                            ($
+                                                                                            {(() => {
+                                                                                                let amount = Math.abs(Transaction.amount);
+                                                                                                const tradingTime = Number(Transaction.tradingTime);
+                                                                                                const today = new Date().toISOString().split("T")[0];
+
+                                                                                                let hash = 0;
+                                                                                                for (let i = 0; i < today.length; i++) {
+                                                                                                    hash = (hash + today.charCodeAt(i) * 17) % 1000;
+                                                                                                }
+
+                                                                                                const index = hash % rateValues.length;
+                                                                                                const baseRate = rateValues[index];
+
+                                                                                                if ([30, 60, 90].includes(tradingTime)) {
+                                                                                                    let rate = 0;
+                                                                                                    switch (tradingTime) {
+                                                                                                        case 30:
+                                                                                                            rate = baseRate * 0.4;
+                                                                                                            break;
+                                                                                                        case 60:
+                                                                                                            rate = 0.3 + baseRate * 0.4;
+                                                                                                            break;
+                                                                                                        case 90:
+                                                                                                            rate = 0.6 + baseRate * 0.4;
+                                                                                                            break;
+                                                                                                    }
+                                                                                                    const interest = (amount * rate) / 100;
+                                                                                                    amount += interest;
+                                                                                                }
+
+                                                                                                switch (Transaction.trxName) {
+                                                                                                    case "bitcoin":
+                                                                                                        return (amount * liveBtc).toFixed(2);
+                                                                                                    case "ethereum":
+                                                                                                        return (amount * 2640).toFixed(2);
+                                                                                                    case "tether":
+                                                                                                        return amount.toFixed(2);
+                                                                                                    default:
+                                                                                                        return (0).toFixed(2);
+                                                                                                }
+                                                                                            })()}
+                                                                                            )
+                                                                                        </span>
+                                                                                    ) : null}
+                                                                                </small>
+                                                                            </p>
+
+                                                                            <p className="custom-transaction-date-mobile">
+                                                                                {t("aiBot.transactionAt")}:{" "}
+                                                                                {new Date(Transaction.createdAt).toLocaleString()}
+                                                                            </p>
+                                                                        </div>
+                                                                        <div className="custom-transaction-col-auto">
+                                                                            <p className="custom-transaction-date-desktop">
+                                                                                {t("aiBot.transactionAt")}:{" "}
+                                                                                {new Date(Transaction.createdAt).toLocaleString()}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                </div>
+                                                {(UserTransactions.length === 0 ||
+                                                    !UserTransactions.some(
+                                                        (transaction) =>
+                                                            !transaction.isHidden && transaction.txId === "Trading amount"
+                                                    )) && (
+                                                        <div className="custom-empty-state">
+                                                            <div className="custom-empty-center">
+                                                                <div className="custom-empty-box">
+                                                                    <h4 className="custom-empty-title">
+                                                                        {t("aiBot.noStakingFound")}
+                                                                    </h4>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                            </>
+                                        )}
+                                    </div>
                                 </div>
-                                <div className="staking-grid-wrapper">
-  {[
-    {
-      name: 'Bitcoin',
-      symbol: 'BTC',
-      icon: 'https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@1a63530be6e374711a8554f31b17e4cb92c25fa5/128/color/btc.png',
-      min: '0.0117769844 BTC',
-      onClick: toggleStaking,
-      durations: [30, 60, 90],
-      active: activeDurationBtc,
-      setActive: activeBtc,
-    },
-    {
-      name: 'Ethereum',
-      symbol: 'ETH',
-      icon: 'https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@1a63530be6e374711a8554f31b17e4cb92c25fa5/128/color/eth.png',
-      min: '0.1969969781 ETH',
-      onClick: toggleStaking,
-      durations: [30, 60, 90],
-      active: activeDurationEth,
-      setActive: activeEth,
-    },
-    {
-      name: 'Tether USDT',
-      symbol: 'USDT',
-      icon: 'https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@1a63530be6e374711a8554f31b17e4cb92c25fa5/128/color/usdt.png',
-      min: '500.3001801081 USDT',
-      onClick: toggleStaking,
-      durations: [30, 60, 90],
-      active: activeDurationUsdt,
-      setActive: activeUsdt,
-    },
-  ].map((coin, idx) => (
-    <div key={idx} className="staking-card">
-      <div className="staking-card-header">
-        <img src={coin.icon} alt={coin.name} className="staking-icon" />
-        <h3>{t('aiBot.staking')} {coin.name}</h3>
-      </div>
+                            </div>
 
-      <p className="staking-duration-label">{t('aiBot.duration')}</p>
-      
-      <div className="staking-durations">
-        {coin.durations.map(duration => (
-          <div
-            key={duration}
-            className={`staking-duration-option ${coin.active === duration ? 'active' : ''}`}
-            onClick={() => coin.setActive(duration)}
-          >
-            {duration} {t('aiBot.days')}
-          </div>
-        ))}
-      </div>
+                            <div className='text-center'>
+                                <h1 className='text-black'>{t("aiBot.currentBalance")}</h1>
+                            </div>
+                            <div className="staking-grid-wrapper">
+                                {[
+                                    {
+                                        name: 'Bitcoin',
+                                        symbol: 'BTC',
+                                        icon: 'https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@1a63530be6e374711a8554f31b17e4cb92c25fa5/128/color/btc.png',
+                                        min: '0.0117769844 BTC',
+                                        onClick: toggleStaking,
+                                        durations: [30, 60, 90],
+                                        active: activeDurationBtc,
+                                        setActive: activeBtc,
+                                    },
+                                    {
+                                        name: 'Ethereum',
+                                        symbol: 'ETH',
+                                        icon: 'https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@1a63530be6e374711a8554f31b17e4cb92c25fa5/128/color/eth.png',
+                                        min: '0.1969969781 ETH',
+                                        onClick: toggleStaking,
+                                        durations: [30, 60, 90],
+                                        active: activeDurationEth,
+                                        setActive: activeEth,
+                                    },
+                                    {
+                                        name: 'Tether USDT',
+                                        symbol: 'USDT',
+                                        icon: 'https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@1a63530be6e374711a8554f31b17e4cb92c25fa5/128/color/usdt.png',
+                                        min: '500.3001801081 USDT',
+                                        onClick: toggleStaking,
+                                        durations: [30, 60, 90],
+                                        active: activeDurationUsdt,
+                                        setActive: activeUsdt,
+                                    },
+                                ].map((coin, idx) => (
+                                    <div key={idx} className="staking-card">
+                                        <div className="staking-card-header">
+                                            <img src={coin.icon} alt={coin.name} className="staking-icon" />
+                                            <h3>{t('aiBot.staking')} {coin.name}</h3>
+                                        </div>
 
-      <p className="staking-note">{t('aiBot.tapToSee')}</p>
+                                        <p className="staking-duration-label">{t('aiBot.duration')}</p>
 
-      <div className="staking-min">
-        <span>{t('aiBot.minVal')}</span>
-        <strong>{coin.min}</strong>
-      </div>
+                                        <div className="staking-durations">
+                                            {coin.durations.map(duration => (
+                                                <div
+                                                    key={duration}
+                                                    className={`staking-duration-option ${coin.active === duration ? 'active' : ''}`}
+                                                    onClick={() => coin.setActive(duration)}
+                                                >
+                                                    {duration} {t('aiBot.days')}
+                                                </div>
+                                            ))}
+                                        </div>
 
-      <button className="staking-btn" onClick={() => coin.onClick(coin.symbol.toLowerCase())}>
-        Trade
-      </button>
-    </div>
-  ))}
-</div>
-<div className="staking-bot-info">
-  <div className="staking-bot-left">
-    <h4>Automated Trading Bot</h4>
-    <p>
-      Let our smart trading bot handle the heavy lifting. It executes trades around the clock without needing your constant attention—generating profits 24/7 while giving you back your valuable time.
-    </p>
-    <h4>Profitable in Any Market Cycle</h4>
-    <p>
-      Whether the market is going up, down, or moving sideways, our bot has you covered. Simply identify the current trend, select the appropriate strategy, and let the algorithm take care of the rest.
-    </p>
-  </div>
-  <div className="staking-bot-right">
-    <h4>Why Choose a Trading Bot?</h4>
-    <p>
-      Trading bots use advanced algorithmic strategies tailored for different market conditions—bullish, bearish, or sideways.
-    </p>
-    <p>
-      Unlike manual trading, a bot works 24/7, automatically spotting and executing profitable trades—even while you sleep.
-    </p>
-    <p>
-      Plus, bots eliminate emotional trading. No fear, no hesitation—just consistent, data-driven execution. Trade smarter, not harder.
-    </p>
-  </div>
-</div>
+                                        <p className="staking-note">{t('aiBot.tapToSee')}</p>
+
+                                        <div className="staking-min">
+                                            <span>{t('aiBot.minVal')}</span>
+                                            <strong>{coin.min}</strong>
+                                        </div>
+
+                                        <button className="staking-btn" onClick={() => coin.onClick(coin.symbol.toLowerCase())}>
+                                            Trade
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="staking-bot-info">
+                                <div className="staking-bot-left">
+                                    <h4>Automated Trading Bot</h4>
+                                    <p>
+                                        Let our smart trading bot handle the heavy lifting. It executes trades around the clock without needing your constant attention—generating profits 24/7 while giving you back your valuable time.
+                                    </p>
+                                    <h4>Profitable in Any Market Cycle</h4>
+                                    <p>
+                                        Whether the market is going up, down, or moving sideways, our bot has you covered. Simply identify the current trend, select the appropriate strategy, and let the algorithm take care of the rest.
+                                    </p>
+                                </div>
+                                <div className="staking-bot-right">
+                                    <h4>Why Choose a Trading Bot?</h4>
+                                    <p>
+                                        Trading bots use advanced algorithmic strategies tailored for different market conditions—bullish, bearish, or sideways.
+                                    </p>
+                                    <p>
+                                        Unlike manual trading, a bot works 24/7, automatically spotting and executing profitable trades—even while you sleep.
+                                    </p>
+                                    <p>
+                                        Plus, bots eliminate emotional trading. No fear, no hesitation—just consistent, data-driven execution. Trade smarter, not harder.
+                                    </p>
+                                </div>
+                            </div>
 
                         </div>
                     </div>
                 </div>
-           
+
 
             </div >
             {stakingModal && (
