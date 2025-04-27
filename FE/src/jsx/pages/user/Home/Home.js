@@ -675,7 +675,7 @@ const Home = () => {
                         <h4 className="widget-title">Contact Us</h4>
                         <div className="textwidget" >
                           <p>Place de La Defense, Puteaux, 92400</p>
-                          <p><a href="mailto:support@BitBlaze.io" >support@BitBlaze.io</a></p>
+                          <p><a href="mailto:support@bitblaze.space" >support@bitblaze.space</a></p>
                         </div>
                       </div>
                     </div>
