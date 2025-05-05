@@ -469,21 +469,21 @@ const Swap = () => {
         <>
             <div className="row">
                 <div className="col-xxl-12">
-                    <div className="card">
+                    <div className="card new-bg-dark ">
                         <Card.Header>
-                            <Card.Title>Convert</Card.Title>
+                            <Card.Title className='text-white'>Convert</Card.Title>
                         </Card.Header>
                         <div className="card-body">
                             <Form className={`currency_validate trade-form ${isDarkMode ? "text-light" : ""}`}>
                                 <Row className="g-3">
                                     <Col xs={12}>
                                         <Form.Group controlId="fromCurrency">
-                                            <Form.Label>From</Form.Label>
-                                            <InputGroup>
-                                                <Form.Select
+                                            <Form.Label className='text-white'>From</Form.Label>
+                                            <InputGroup className='new-bg-light'>
+                                                <Form.Select 
                                                     onChange={(e) => handleCurrencyChange(e, "from")}
                                                     value={selectedFromCurrency}
-                                                    className={isDarkMode ? "bg-dark text-light bglight" : "bgdark"}
+                                                    className={isDarkMode ? "bg-dark text-light new-bg-light" : "new-bg-light"}
                                                 >
                                                     <option value="USDT">USDT</option>
                                                     <option value="ETH">ETH</option>
@@ -494,10 +494,10 @@ const Swap = () => {
                                                     placeholder="Enter amount to convert"
                                                     value={inputValue}
                                                     onChange={handleInputChange}
-                                                    className={isDarkMode ? "bg-dark text-light" : ""}
+                                                    className={isDarkMode ? "bg-dark new-bg-light" : "new-bg-light"}
                                                 />
                                             </InputGroup>
-                                            <p className="mt-2">
+                                            <p className="mt-2 text-white">
                                                 Available Balance:{" "}
                                                 {selectedFromCurrency === "BTC"
                                                     ? btcBalance
@@ -511,12 +511,12 @@ const Swap = () => {
 
                                     <Col xs={12}>
                                         <Form.Group controlId="toCurrency">
-                                            <Form.Label>To</Form.Label>
+                                            <Form.Label className='text-white'>To</Form.Label>
                                             <InputGroup>
                                                 <Form.Select
                                                     onChange={(e) => handleCurrencyChange(e, "to")}
                                                     value={selectedToCurrency}
-                                                    className={isDarkMode ? "bg-dark text-light bglight" : "bgdark"}
+                                                    className={isDarkMode ? "bg-dark text-light new-bg-light" : "new-bg-light"}
                                                 >
                                                     <option value="USDT">USDT</option>
                                                     <option value="ETH">ETH</option>
@@ -527,7 +527,7 @@ const Swap = () => {
                                                     placeholder={placeholder}
                                                     readOnly
                                                     value={selectedToCurrencyInput}
-                                                    className={isDarkMode ? "bg-dark text-light" : ""}
+                                                    className={isDarkMode ? "bg-dark text-light new-bg-light" : "new-bg-light"}
                                                 />
                                                 {loadingSecondInput && (
                                                     <div className="input-group-text">
@@ -554,6 +554,7 @@ const Swap = () => {
                                         onClick={postUserTransaction}
                                         disabled={isDisable}
                                         variant="success"
+                                        className='new-theme-bg no-border'
                                         block
                                     >
                                         Convert Now

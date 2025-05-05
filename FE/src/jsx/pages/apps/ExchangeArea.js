@@ -59,9 +59,9 @@ const ExchangeAreaa = () => {
                 {exchanges.map((exchange, index) => (
                     <div key={index} className="col-md-6 col-lg-4 mb-4">
                         <Link to={exchange.link} target="_blank" className="nasaaa" rel="noopener noreferrer">
-                            <div className="card shadow-sm text-center p-4">
+                            <div className="card new-bg-dark  shadow-sm text-center p-4">
                                 <img src={exchange.logo} alt={exchange.name} className="img-fluid" style={{ maxWidth: "200px", textAlign: 'center', margin: "auto" }} />
-                                <h5 className="mt-3 hasa" >{exchange.name}</h5>
+                                <h5 className="mt-3 hasa text-white" >{exchange.name}</h5>
                             </div>
                         </Link>
                     </div>

@@ -25,12 +25,12 @@
   }
   
   .staking-card {
-    background: #1a1a1a;
+    background: #131a22;
     border-radius: 1.25rem;
     padding: 1.5rem;
     width: 300px;
     color: #fff;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    /* box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); */
     transition: transform 0.3s ease;
   }
   
@@ -74,8 +74,8 @@
   }
   
   .staking-duration-option.active {
-    background: #ffce00;
-    color: #000;
+    background: #7634dc;
+    color: #ffffff;
     font-weight: bold;
   }
   
@@ -103,8 +103,8 @@
     margin-top: 1.5rem;
     width: 100%;
     padding: 0.75rem;
-    background: #ffce00;
-    color: #000;
+    background: #7634dc;
+    color: #ffffff;
     border: none;
     border-radius: 10px;
     font-weight: 600;
@@ -113,7 +113,7 @@
   }
   
   .staking-btn:hover {
-    background: #ffc300;
+    background: #551daa;
   }
   .staking-bot-info {
     display: flex;
@@ -123,7 +123,16 @@
     padding: 1rem;
     border: 1px solid #333;
     border-radius: 1rem;
-    background-color: #111;
+    background-color: #131a22;
+  }
+  .tickettable tr:hover{
+    cursor: pointer;
+    background-color: rebeccapurple !important;
+  }
+  .tickettable th,
+  .tickettable td{
+    color: white !important;
+    background-color: transparent !important;
   }
   
   .staking-bot-left,
@@ -137,7 +146,7 @@
   .staking-bot-left h4,
   .staking-bot-right h4 {
     font-size: 1rem;
-    color: #ffce00;
+    color: #7634dc;
     margin-bottom: 0.5rem;
     margin-top: 0.75rem;
   }
@@ -155,7 +164,7 @@
   .custom-card {
     border: 1px solid #333;
     border-radius: 12px;
-    background: #1e1e1e;
+    background: #131a22;
     color: #e0e0e0;
     overflow: hidden;
   }

@@ -253,9 +253,9 @@ const Documents = () => {
 		<> 
 				<Row>
 					<Col xl={12} lg={12}>
-						<Card>
-							<Card.Header>
-								<Card.Title>All Files</Card.Title>
+						<Card className="new-bg-dark">
+							<Card.Header className="text-white">
+								<Card.Title className="text-white">All Files</Card.Title>
 							</Card.Header>
 							{isLoading ? (
 								<div className="text-center my-5">
@@ -265,7 +265,7 @@ const Documents = () => {
 								</div>
 						) : !Array.isArray(allFiles) || allFiles.length === 0 ? (
 								<div className="text-center my-5">
-									<h4>No documents found!</h4>
+									<h4 className="text-white">No documents found!</h4>
 								</div>
 							) : (
 								<div className="p-4">

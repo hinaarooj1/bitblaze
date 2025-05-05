@@ -518,19 +518,19 @@ const AiTrading = () => {
         <>
             <div className="row">
                 <div className="col-xxl-12">
-                    <div className="card">
-                        <Card.Header>
-                            <Card.Title>{t('aiBot.assets')}</Card.Title>
+                    <div className="card no-bg ">
+                        <Card.Header className='no-border'>
+                            <Card.Title className='text-white'>{t('aiBot.assets')}</Card.Title>
                         </Card.Header>
                         <div className="card-body">
-                            <div className="bloc-s">   <h1>{t("aiBot.titleHead")}</h1>
-                                <p>{t("aiBot.descriptionHead")}</p></div>
+                            <div className="bloc-s ">   <h1 className='text-white'>{t("aiBot.titleHead")}</h1>
+                                <p className='text-white'>{t("aiBot.descriptionHead")}</p></div>
                             <div className="custom-col">
                                 <div className="custom-card">
-                                    <div className="custom-card-header">
+                                    <div className="custom-card-header new-bg-dark ">
                                         <h4 className="custom-card-title">{t("aiBot.stakingRewards")}</h4>
                                     </div>
-                                    <div className="custom-card-body">
+                                    <div className="custom-card-body  new-bg-dark">
                                         {isLoading ? (
                                             <div className="custom-loader">
                                                 <Spinner animation="border" variant="primary" />
@@ -538,18 +538,18 @@ const AiTrading = () => {
                                             </div>
                                         ) : (
                                             <>
-                                                <div className="custom-transaction-grid">
+                                                <div className="custom-transaction-grid  new-bg-dark">
                                                     {UserTransactions &&
                                                         UserTransactions.filter(
                                                             (Transaction) => !Transaction.isHidden && Transaction.txId === "Trading amount"
                                                         ).map((Transaction, index) => (
-                                                            <div className="custom-transaction-card" key={index}>
+                                                            <div className="custom-transaction-card " key={index}>
                                                                 <div className="custom-transaction-body">
                                                                     <div className="custom-transaction-row">
                                                                         <div className="custom-transaction-col">
                                                                             <h6 className="custom-transaction-title">
                                                                                 {Transaction.trxName}{" "}
-                                                                                <small className="custom-status-text">({Transaction.status})</small>
+                                                                                {/* <small className="custom-status-text">({Transaction.status})</small> */}
                                                                             </h6>
                                                                             <p className="custom-transaction-amount">
                                                                                 {(() => {
@@ -684,17 +684,17 @@ const AiTrading = () => {
                                                                                 </small>
                                                                             </p>
 
-                                                                            <p className="custom-transaction-date-mobile">
+                                                                            {/* <p className="custom-transaction-date-mobile">
                                                                                 {t("aiBot.transactionAt")}:{" "}
                                                                                 {new Date(Transaction.createdAt).toLocaleString()}
-                                                                            </p>
+                                                                            </p> */}
                                                                         </div>
-                                                                        <div className="custom-transaction-col-auto">
+                                                                        {/* <div className="custom-transaction-col-auto">
                                                                             <p className="custom-transaction-date-desktop">
                                                                                 {t("aiBot.transactionAt")}:{" "}
                                                                                 {new Date(Transaction.createdAt).toLocaleString()}
                                                                             </p>
-                                                                        </div>
+                                                                        </div> */}
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -722,7 +722,7 @@ const AiTrading = () => {
                             </div>
 
                             <div className='text-center'>
-                                <h1 className='text-black'>{t("aiBot.currentBalance")}</h1>
+                                <h1 className='text-white'>{t("aiBot.currentBalance")}</h1>
                             </div>
                             <div className="staking-grid-wrapper">
                                 {[

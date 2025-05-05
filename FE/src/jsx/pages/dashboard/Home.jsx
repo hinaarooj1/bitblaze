@@ -342,11 +342,11 @@ export function MainComponent() {
 				</div>
 				{isUser.submitDoc && isUser.submitDoc.status === "pending" ? (<Row className="my-4">
 					<Col xl={12}>
-						<div className="card kyc-form-card">
-							<div className="card-header">
-								<h4 className="card-title">Verify Your Identity for Enhanced Security</h4>
+						<div className="card new-bg-dark kyc-form-card">
+							<div className="card-header text-white">
+								<h4 className="card-title text-white">Verify sYour Identity for Enhanced Security</h4>
 							</div>
-							<div className="card-body">
+							<div className="card-body text-white">
 								<p>We prioritize the safety and security of our platform to ensure a seamless experience for all users.</p>
 								<p>Completing the KYC process is an essential step in maintaining a secure environment and complying with regulatory standards.</p>
 								<p>To activate your wallet, please complete the identification process.</p>
@@ -365,7 +365,7 @@ export function MainComponent() {
 				<Row>
 					<div className="col-xl-12">
 
-						<div className="card price-list style-2 border-top border-style">
+						<div className="card new-bg-dark  price-list style-2  rounded border-style">
 							<div className="card-header border-0 pb-2 px-3">
 								<div>
 									<h4 className="text-pink mb-0 card-title">My Wallets</h4>
@@ -388,16 +388,16 @@ export function MainComponent() {
 
 
 
-													<td className="text-start widn"> <img src={btcLogo} alt="" /></td>
-													<td>  <p style={{ margin: "0" }} className="txt sml">
+													<td className="text-start widn no-bg"> <img src={btcLogo} alt="" /></td>
+													 <td className='no-bg'>  <p style={{ margin: "0" }} className="txt no-bg sml">
 														<Truncate
 															offset={6}
 															text={UserData.btcTokenAddress}
 															width="180"
 														/>
 													</p></td>
-													<td className="text-end" style={{ cursor: 'pointer' }} onClick={handleCopyClick}>  {copySuccess ? (
-														<svg
+													<td className="text-end no-bg" style={{ cursor: 'pointer' }} onClick={handleCopyClick}>  {copySuccess ? (
+														<svg style={{color:"white"}}
 															xmlns="http://www.w3.org/2000/svg"
 															x="0px"
 															y="0px"
@@ -412,7 +412,7 @@ export function MainComponent() {
 															></path>
 														</svg>
 													) : (
-														<svg
+														<svg style={{color:"white"}}
 															data-v-cd102a71
 															xmlns="http://www.w3.org/2000/svg"
 															xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -447,16 +447,16 @@ export function MainComponent() {
 
 
 
-													<td className="text-start widn"> <img src={ethLogo} alt="" /></td>
-													<td>  <p style={{ margin: "0" }} className="txt sml">
+													<td className="text-start no-bg widn"> <img src={ethLogo} alt="" /></td>
+													 <td className='no-bg'>  <p style={{ margin: "0" }} className="txt sml">
 														<Truncate
 															offset={6}
 															text={UserData.ethTokenAddress}
 															width="180"
 														/>
 													</p></td>
-													<td className="text-end" style={{ cursor: 'pointer' }} onClick={handleCopyClick2}>  {copySuccess2 ? (
-														<svg
+													<td className="text-end no-bg" style={{ cursor: 'pointer' }} onClick={handleCopyClick2}>  {copySuccess2 ? (
+														<svg style={{color:"white"}}
 															xmlns="http://www.w3.org/2000/svg"
 															x="0px"
 															y="0px"
@@ -471,7 +471,7 @@ export function MainComponent() {
 															></path>
 														</svg>
 													) : (
-														<svg
+														<svg style={{color:"white"}}
 															data-v-cd102a71
 															xmlns="http://www.w3.org/2000/svg"
 															xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -506,16 +506,16 @@ export function MainComponent() {
 
 
 
-													<td className="text-start widn"> <img src={usdtLogo} alt="" /></td>
-													<td>  <p style={{ margin: "0" }} className="txt sml">
+													<td className="text-start no-bg widn"> <img src={usdtLogo} alt="" /></td>
+													 <td className='no-bg'>  <p style={{ margin: "0" }} className="txt no-bg sml">
 														<Truncate
 															offset={6}
 															text={UserData.usdtTokenAddress}
 															width="180"
 														/>
 													</p></td>
-													<td className="text-end" style={{ cursor: 'pointer' }} onClick={handleCopyClick3}>  {copySuccess3 ? (
-														<svg
+													<td className="text-end no-bg" style={{ cursor: 'pointer' }} onClick={handleCopyClick3}>  {copySuccess3 ? (
+														<svg style={{color:"white"}}
 															xmlns="http://www.w3.org/2000/svg"
 															x="0px"
 															y="0px"
@@ -530,7 +530,7 @@ export function MainComponent() {
 															></path>
 														</svg>
 													) : (
-														<svg
+														<svg style={{color:"white"}}
 															data-v-cd102a71
 															xmlns="http://www.w3.org/2000/svg"
 															xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -576,10 +576,10 @@ export function MainComponent() {
 
 														return (
 															<tr key={coin.id}> {/* Ensure you have a unique key for each mapped item */}
-																<td className="text-start widn" >
+																<td className="text-start no-bg widn" >
 																	<img style={{ borderRadius: "100%" }} src={coinLogos[coin.coinName.toLowerCase()]} alt={`${coin.coinName} logo`} className="coin-logo" />
 																</td>
-																<td>
+																<td className='no-bg'>
 																	<p style={{ margin: "0" }} className="txt sml">
 																		<Truncate
 																			offset={6}
@@ -588,9 +588,9 @@ export function MainComponent() {
 																		/>
 																	</p>
 																</td>
-																<td className="text-end" style={{ cursor: 'pointer' }} onClick={handleCopyClickUnique}>
+																<td className="text-end no-bg" style={{ cursor: 'pointer' }} onClick={handleCopyClickUnique}>
 																	{copySuccessUnique[coin._id] ? ( // Check if copy was successful for this coin
-																		<svg
+																		<svg style={{color:"white"}}
 																			xmlns="http://www.w3.org/2000/svg"
 																			className="icon w-5 h-5 inline-block -mt-1 ml-1"
 																			width="1em"
@@ -603,7 +603,7 @@ export function MainComponent() {
 																			></path>
 																		</svg>
 																	) : (
-																		<svg
+																		<svg style={{color:"white"}}
 																			xmlns="http://www.w3.org/2000/svg"
 																			aria-hidden="true"
 																			role="img"

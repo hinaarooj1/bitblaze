@@ -304,9 +304,9 @@ const PaymentMethods = () => {
         <>
             <div className="row">
                 <div className="col-xxl-12">
-                    <div className="card">
+                    <div className="card new-bg-dark ">
                         <Card.Header>
-                            <Card.Title>Accounts</Card.Title>
+                            <Card.Title className='text-white'>Accounts</Card.Title>
                         </Card.Header>
                         <div className="card-body">
                             {isLoading ? (

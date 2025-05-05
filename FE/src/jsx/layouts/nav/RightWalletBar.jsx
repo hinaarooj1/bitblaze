@@ -362,9 +362,9 @@ const RightWalletBar = () => {
                                     <span className="fs-14 d-block">+2.25%</span>
                                 </div>
                             </div>
-                            <div className="change-btn-1">
+                            <div className="change-btn-1  ">
 
-                                <Link to={"/assets"} className="btn btn-sm"
+                                <Link to={"/assets"} className="btn  btn-sm"
                                     onClick={() => setPaymentModal(true)}
                                 >
                                     {SVGICON.WithdrawSvgIcon}
@@ -372,8 +372,8 @@ const RightWalletBar = () => {
                                 </Link>
                             </div>
                         </div>
-                        <div className="order-history">
-                            <div className="card price-list-1 mb-0">
+                        <div className="order-history  ">
+                            <div className="card new-bg-dark price-list-1 mb-0">
                                 <div className="card-header border-0 pb-2 px-3">
                                     <div>
                                         <h4 className="text-primary card-title mb-2">Transactions</h4>
@@ -392,9 +392,9 @@ const RightWalletBar = () => {
                                         <table className="table text-center bg-primary-hover tr-rounded order-tbl mt-2 ">
                                             <thead>
                                                 <tr>
-                                                    <th className="text-start">Coin</th>
-                                                    <th className="text-center">Type</th>
-                                                    <th className="text-end">Amount</th>
+                                                    <th className="new-bg-dark text-start">Coin</th>
+                                                    <th className="new-bg-dark text-center">Type</th>
+                                                    <th className="new-bg-dark text-end">Amount</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -402,7 +402,7 @@ const RightWalletBar = () => {
                                                     <>
                                                         {UserTransactions.filter(transaction => !transaction.isHidden).map((Transaction, index) => (
                                                             <tr key={index} className='widn'>
-                                                                <td className="text-start">
+                                                                <td className="text-start new-bg-dark text-white">
                                                                     <img
                                                                         style={{ borderRadius: "100%" }}
                                                                         src={coinLogos[Transaction.trxName.toLowerCase()]}
@@ -410,8 +410,8 @@ const RightWalletBar = () => {
                                                                         className="coin-logo me-2 img-btc"
                                                                     />
                                                                 </td>
-                                                                <td>{Transaction.type === "withdraw" ? "Withdraw" : "Deposit"}</td>
-                                                                <td className="text-end">
+                                                                <td className='new-bg-dark text-white'>{Transaction.type === "withdraw" ? "Withdraw" : "Deposit"}</td>
+                                                                <td className="new-bg-dark text-white text-end">
                                                                     {`${isUser.currency === "EUR" ? "€" : "$"} ${(() => {
                                                                         let convertedAmount;
                                                                         // Perform conversion only if the user's currency is EUR
