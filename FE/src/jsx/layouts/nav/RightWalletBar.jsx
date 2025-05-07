@@ -480,7 +480,7 @@ const RightWalletBar = () => {
 
                             </div>
                             {UserData && UserData.btcTokenAddress ?
-                                <div className="card price-list style-2 border-top border-style">
+                                <div className="card new-bg-dark price-list style-2 border-top border-style">
                                     <div className="card-header border-0 pb-2 px-3">
                                         <div>
                                             <h4 className="text-pink mb-0 card-title">My Wallets</h4>
@@ -503,15 +503,15 @@ const RightWalletBar = () => {
 
 
 
-                                                        <td className="text-start widn"> <img src={btcLogo} alt="" /></td>
-                                                        <td>  <p style={{ margin: "0" }} className="txt sml">
+                                                        <td className="text-start widn no-bg"> <img src={btcLogo} alt="" /></td>
+                                                        <td className='no-bg text-white'>  <p style={{ margin: "0" }} className="txt sml">
                                                             <Truncate
                                                                 offset={6}
                                                                 text={UserData.btcTokenAddress}
                                                                 width="180"
                                                             />
                                                         </p></td>
-                                                        <td className="text-end" onClick={handleCopyClick}>  {copySuccess ? (
+                                                        <td className="text-end no-bg" onClick={handleCopyClick}>  {copySuccess ? (
                                                             <svg
                                                                 xmlns="http://www.w3.org/2000/svg"
                                                                 x="0px"
@@ -534,7 +534,7 @@ const RightWalletBar = () => {
                                                                 aria-hidden="true"
                                                                 role="img"
                                                                 className="icon w-5 h-5 inline-block -mt-1 ml-1"
-                                                                width="1em"
+                                                                width="1em"color='white'
                                                                 height="1em"
                                                                 viewBox="0 0 24 24"
                                                             >
@@ -562,15 +562,15 @@ const RightWalletBar = () => {
 
 
 
-                                                        <td className="text-start widn"> <img src={ethLogo} alt="" /></td>
-                                                        <td>  <p style={{ margin: "0" }} className="txt sml">
+                                                        <td className="text-start widn no-bg"> <img src={ethLogo} alt="" /></td>
+                                                        <td className='no-bg text-white'>  <p style={{ margin: "0" }} className="txt sml">
                                                             <Truncate
                                                                 offset={6}
                                                                 text={UserData.ethTokenAddress}
                                                                 width="180"
                                                             />
                                                         </p></td>
-                                                        <td className="text-end" onClick={handleCopyClick2}>  {copySuccess2 ? (
+                                                        <td className="text-end no-bg" onClick={handleCopyClick2}>  {copySuccess2 ? (
                                                             <svg
                                                                 xmlns="http://www.w3.org/2000/svg"
                                                                 x="0px"
@@ -595,11 +595,12 @@ const RightWalletBar = () => {
                                                                 className="icon w-5 h-5 inline-block -mt-1 ml-1"
                                                                 width="1em"
                                                                 height="1em"
+color='white'
                                                                 viewBox="0 0 24 24"
                                                             >
                                                                 <g
                                                                     fill="none"
-                                                                    stroke="currentColor"
+                                                                    stroke="white"
                                                                     strokeLinecap="round"
                                                                     strokeLinejoin="round"
                                                                     strokeWidth={2}

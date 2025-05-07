@@ -117,7 +117,7 @@ export default function Router() {
             }
           />
           <Route
-            path="/letter"
+            path="/legal"
             element={
               <RequireAuth loginPath={"/auth/login"}>
                 <LetterPg />

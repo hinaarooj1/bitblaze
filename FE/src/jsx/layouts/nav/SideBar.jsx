@@ -96,7 +96,7 @@ const SideBar = () => {
             <div className="info">
               <p>Contact our support</p>
               <Link to={"/support"} className="btn bg-white text-black w-75 btn-sm">
-                Supports
+                Support
               </Link>
             </div>
           </div>

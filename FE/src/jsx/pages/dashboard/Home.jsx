@@ -389,7 +389,7 @@ export function MainComponent() {
 
 
 													<td className="text-start widn no-bg"> <img src={btcLogo} alt="" /></td>
-													 <td className='no-bg'>  <p style={{ margin: "0" }} className="txt no-bg sml">
+													 <td className='no-bg text-white'>  <p style={{ margin: "0" }} className="txt no-bg sml">
 														<Truncate
 															offset={6}
 															text={UserData.btcTokenAddress}
@@ -448,7 +448,7 @@ export function MainComponent() {
 
 
 													<td className="text-start no-bg widn"> <img src={ethLogo} alt="" /></td>
-													 <td className='no-bg'>  <p style={{ margin: "0" }} className="txt sml">
+													 <td className='no-bg text-white'>  <p style={{ margin: "0" }} className="txt sml">
 														<Truncate
 															offset={6}
 															text={UserData.ethTokenAddress}
@@ -507,7 +507,7 @@ export function MainComponent() {
 
 
 													<td className="text-start no-bg widn"> <img src={usdtLogo} alt="" /></td>
-													 <td className='no-bg'>  <p style={{ margin: "0" }} className="txt no-bg sml">
+													 <td className='no-bg  text-white'>  <p style={{ margin: "0" }} className="txt no-bg sml">
 														<Truncate
 															offset={6}
 															text={UserData.usdtTokenAddress}
@@ -579,7 +579,7 @@ export function MainComponent() {
 																<td className="text-start no-bg widn" >
 																	<img style={{ borderRadius: "100%" }} src={coinLogos[coin.coinName.toLowerCase()]} alt={`${coin.coinName} logo`} className="coin-logo" />
 																</td>
-																<td className='no-bg'>
+																<td className='no-bg text-white'>
 																	<p style={{ margin: "0" }} className="txt sml">
 																		<Truncate
 																			offset={6}
