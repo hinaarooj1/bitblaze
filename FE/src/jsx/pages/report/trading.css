@@ -285,3 +285,35 @@
     color: #aaa;
   }
   
+  /*  */
+  .investment-details {
+    margin-top: 10px;
+    padding: 12px;
+    background-color: rgba(0,0,0,0.1);
+    border-radius: 6px;
+  }
+  
+  .detail-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+  
+  .detail-row:last-child {
+    margin-bottom: 0;
+  }
+  
+  .detail-label {
+    font-weight: 500;
+    color: #aaa;
+  }
+  
+  .detail-value {
+    text-align: right;
+  }
+  
+  .profit {
+    color: #4caf50;
+    font-weight: 500;
+  }

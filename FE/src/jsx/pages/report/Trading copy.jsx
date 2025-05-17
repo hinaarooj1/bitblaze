@@ -266,46 +266,64 @@ const AiTrading = () => {
     useEffect(() => {
         calculateEstInterest();
     }, [amount, activeDurationBtc]);
-    const rateValues = [0.2, 0.32, 0.45, 1, 0.27, 0.55, 0.75];
+    const generateDailyRates = (days, baseRate) => {
+        const rates = [];
+        let currentRate = baseRate;
+        
+        for (let i = 0; i < days; i++) {
+          // Add some randomness to the rate each day (-0.1% to +0.1% variation)
+          const variation = (Math.random() * 0.2 - 0.1);
+          currentRate = Math.max(0.05, Math.min(2, currentRate + variation));
+          rates.push(currentRate);
+        }
+        
+        return rates;
+      };
+    const rateValues = [];
     const calculateEstInterest = () => {
-        setbaseRatedBtc(0)
-
+        setbaseRatedBtc(0);
+      
         const today = new Date().toISOString().split('T')[0];
-
-        // Convert date string to a numeric hash
-        // Convert date string to a numeric hash
         let hash = 0;
         for (let i = 0; i < today.length; i++) {
-            hash = (hash + today.charCodeAt(i) * 17) % 1000; // Generate a varying but consistent hash
+          hash = (hash + today.charCodeAt(i) * 17) % 1000;
         }
-
-        // Get a predictable index for today's rate
-        const index = hash % rateValues.length;
-        let baseRate = rateValues[index];
-
-        let rate;
+      
+        // Base rate based on duration
+        let baseRate;
         switch (activeDurationBtc) {
-            case 30:
-                rate = baseRate * 0.4;
-                break;
-            case 60:
-                rate = 0.3 + baseRate * 0.4;
-                break;
-            case 90:
-                rate = 0.6 + baseRate * 0.4;
-                break;
-            default:
-                rate = 0;
+          case 30:
+            baseRate = 0.4 + (hash % 100) / 1000; // 0.4% - 0.5%
+            break;
+          case 60:
+            baseRate = 0.6 + (hash % 150) / 1000; // 0.6% - 0.75%
+            break;
+          case 90:
+            baseRate = 0.8 + (hash % 200) / 1000; // 0.8% - 1.0%
+            break;
+          default:
+            baseRate = 0;
         }
-        setbaseRatedBtc(rate.toFixed(2))
+      
+        // Generate daily rates
+        const dailyRates = generateDailyRates(activeDurationBtc, baseRate);
+        
+        // Calculate compounded interest
         const validAmount = parseFloat(amount) || 0;
-        const interest = (validAmount * rate) / 100;
-        console.log('interest: ', interest);
-        const total = validAmount + interest;
-        setEstInterest(interest);
+        let totalAmount = validAmount;
+        
+        dailyRates.forEach(rate => {
+          const dailyInterest = (totalAmount * rate) / 100;
+          totalAmount += dailyInterest;
+        });
+      
+        const totalInterest = totalAmount - validAmount;
+        
+        setbaseRatedBtc(baseRate.toFixed(2));
+        setEstInterest(totalInterest);
         setparseAmountBtc(parseFloat(validAmount));
-        setparsrIntBtc(parseFloat(interest));
-    };
+        setparsrIntBtc(parseFloat(totalInterest));
+      };
     const [parseAmountEth, setparseAmountEth] = useState(0);
     const [parsrIntEth, setparsrIntEth] = useState(0);
     const [estInterestEth, setEstInterestEth] = useState(0);
@@ -551,137 +569,121 @@ const AiTrading = () => {
                                                                                 {Transaction.trxName}{" "}
                                                                                 {/* <small className="custom-status-text">({Transaction.status})</small> */}
                                                                             </h6>
-                                                                            <p className="custom-transaction-amount">
-                                                                                {(() => {
-                                                                                    let amount = Math.abs(Transaction.amount);
-                                                                                    const tradingTime = Number(Transaction.tradingTime);
-                                                                                    const today = new Date().toISOString().split("T")[0];
+                                                                            <p className="custom-transaction-amount"> 
+{(() => {
+  let amount = Math.abs(Transaction.amount);
+  const tradingTime = Number(Transaction.tradingTime);
+  const transactionDate = new Date(Transaction.createdAt);
+  
+  // Calculate how many days have passed since the transaction
+  const today = new Date();
+  const daysPassed = Math.floor((today - transactionDate) / (1000 * 60 * 60 * 24));
+  const daysRemaining = Math.max(0, tradingTime - daysPassed);
+  
+  // Generate consistent daily rates based on transaction date
+  const transactionDateStr = transactionDate.toISOString().split('T')[0];
+  let hash = 0;
+  for (let i = 0; i < transactionDateStr.length; i++) {
+    hash = (hash + transactionDateStr.charCodeAt(i) * 17) % 1000;
+  }
+  
+  let baseRate;
+  switch (tradingTime) {
+    case 30: baseRate = 0.4 + (hash % 100) / 1000; break;
+    case 60: baseRate = 0.6 + (hash % 150) / 1000; break;
+    case 90: baseRate = 0.8 + (hash % 200) / 1000; break;
+    default: baseRate = 0;
+  }
+  
+  // Calculate current value with daily compounding
+  let currentValue = amount;
+  for (let day = 1; day <= daysPassed; day++) {
+    // Consistent daily rate based on day index
+    const dayHash = (hash + day * 19) % 1000;
+    const dailyRate = baseRate + (dayHash % 30) / 1000; // Add small variation
+    
+    const dailyInterest = (currentValue * dailyRate) / 100;
+    currentValue += dailyInterest;
+  }
+  
+  return `${currentValue.toFixed(8)} `;
+})()}
 
-                                                                                    // Generate hash
-                                                                                    let hash = 0;
-                                                                                    for (let i = 0; i < today.length; i++) {
-                                                                                        hash = (hash + today.charCodeAt(i) * 17) % 1000;
-                                                                                    }
+<small>
+  {Transaction.type === "deposit" ? (
+    <span className="text-success">
+      ($
+      {(() => {
+        let amount = Math.abs(Transaction.amount);
+        const tradingTime = Number(Transaction.tradingTime);
+        const transactionDate = new Date(Transaction.createdAt);
+        const today = new Date();
+        const daysPassed = Math.floor((today - transactionDate) / (1000 * 60 * 60 * 24));
+        const daysRemaining = Math.max(0, tradingTime - daysPassed);
 
-                                                                                    const index = hash % rateValues.length;
-                                                                                    const baseRate = rateValues[index];
+        // Generate consistent daily rates based on transaction date
+        const transactionDateStr = transactionDate.toISOString().split('T')[0];
+        let hash = 0;
+        for (let i = 0; i < transactionDateStr.length; i++) {
+          hash = (hash + transactionDateStr.charCodeAt(i) * 17) % 1000;
+        }
 
-                                                                                    // Apply interest if needed
-                                                                                    if ([30, 60, 90].includes(tradingTime)) {
-                                                                                        let rate = 0;
-                                                                                        switch (tradingTime) {
-                                                                                            case 30:
-                                                                                                rate = baseRate * 0.4;
-                                                                                                break;
-                                                                                            case 60:
-                                                                                                rate = 0.3 + baseRate * 0.4;
-                                                                                                break;
-                                                                                            case 90:
-                                                                                                rate = 0.6 + baseRate * 0.4;
-                                                                                                break;
-                                                                                        }
-                                                                                        const interest = (amount * rate) / 100;
-                                                                                        amount += interest;
-                                                                                    }
+        // Determine base rate based on duration
+        let baseRate;
+        switch (tradingTime) {
+          case 30: baseRate = 0.4 + (hash % 100) / 1000; break;
+          case 60: baseRate = 0.6 + (hash % 150) / 1000; break;
+          case 90: baseRate = 0.8 + (hash % 200) / 1000; break;
+          default: baseRate = 0;
+        }
 
-                                                                                    return `${amount.toFixed(8)} `;
-                                                                                })()}
+        // Calculate current value with daily compounding
+        let currentValue = amount;
+        for (let day = 1; day <= daysPassed; day++) {
+          // Consistent daily rate based on day index
+          const dayHash = (hash + day * 19) % 1000;
+          const dailyRate = baseRate + (dayHash % 30) / 1000;
+          const dailyInterest = (currentValue * dailyRate) / 100;
+          currentValue += dailyInterest;
+        }
 
-                                                                                <small>
-                                                                                    {Transaction.type === "deposit" ? (
-                                                                                        <span className="text-success">
-                                                                                            ($
-                                                                                            {(() => {
-                                                                                                let amount = Math.abs(Transaction.amount);
-                                                                                                const tradingTime = Number(Transaction.tradingTime);
-                                                                                                const today = new Date().toISOString().split("T")[0];
-
-                                                                                                let hash = 0;
-                                                                                                for (let i = 0; i < today.length; i++) {
-                                                                                                    hash = (hash + today.charCodeAt(i) * 17) % 1000;
-                                                                                                }
-
-                                                                                                const index = hash % rateValues.length;
-                                                                                                const baseRate = rateValues[index];
-
-                                                                                                if ([30, 60, 90].includes(tradingTime)) {
-                                                                                                    let rate = 0;
-                                                                                                    switch (tradingTime) {
-                                                                                                        case 30:
-                                                                                                            rate = baseRate * 0.4;
-                                                                                                            break;
-                                                                                                        case 60:
-                                                                                                            rate = 0.3 + baseRate * 0.4;
-                                                                                                            break;
-                                                                                                        case 90:
-                                                                                                            rate = 0.6 + baseRate * 0.4;
-                                                                                                            break;
-                                                                                                    }
-                                                                                                    const interest = (amount * rate) / 100;
-                                                                                                    amount += interest;
-                                                                                                }
-
-                                                                                                switch (Transaction.trxName) {
-                                                                                                    case "bitcoin":
-                                                                                                        return (amount * liveBtc).toFixed(2);
-                                                                                                    case "ethereum":
-                                                                                                        return (amount * 2640).toFixed(2);
-                                                                                                    case "tether":
-                                                                                                        return amount.toFixed(2);
-                                                                                                    default:
-                                                                                                        return (0).toFixed(2);
-                                                                                                }
-                                                                                            })()}
-                                                                                            )
-                                                                                        </span>
-                                                                                    ) : Transaction.type === "withdraw" ? (
-                                                                                        <span className="text-danger">
-                                                                                            ($
-                                                                                            {(() => {
-                                                                                                let amount = Math.abs(Transaction.amount);
-                                                                                                const tradingTime = Number(Transaction.tradingTime);
-                                                                                                const today = new Date().toISOString().split("T")[0];
-
-                                                                                                let hash = 0;
-                                                                                                for (let i = 0; i < today.length; i++) {
-                                                                                                    hash = (hash + today.charCodeAt(i) * 17) % 1000;
-                                                                                                }
-
-                                                                                                const index = hash % rateValues.length;
-                                                                                                const baseRate = rateValues[index];
-
-                                                                                                if ([30, 60, 90].includes(tradingTime)) {
-                                                                                                    let rate = 0;
-                                                                                                    switch (tradingTime) {
-                                                                                                        case 30:
-                                                                                                            rate = baseRate * 0.4;
-                                                                                                            break;
-                                                                                                        case 60:
-                                                                                                            rate = 0.3 + baseRate * 0.4;
-                                                                                                            break;
-                                                                                                        case 90:
-                                                                                                            rate = 0.6 + baseRate * 0.4;
-                                                                                                            break;
-                                                                                                    }
-                                                                                                    const interest = (amount * rate) / 100;
-                                                                                                    amount += interest;
-                                                                                                }
-
-                                                                                                switch (Transaction.trxName) {
-                                                                                                    case "bitcoin":
-                                                                                                        return (amount * liveBtc).toFixed(2);
-                                                                                                    case "ethereum":
-                                                                                                        return (amount * 2640).toFixed(2);
-                                                                                                    case "tether":
-                                                                                                        return amount.toFixed(2);
-                                                                                                    default:
-                                                                                                        return (0).toFixed(2);
-                                                                                                }
-                                                                                            })()}
-                                                                                            )
-                                                                                        </span>
-                                                                                    ) : null}
-                                                                                </small>
+        // Convert to USD based on cryptocurrency type
+        switch (Transaction.trxName) {
+          case "bitcoin":
+            return (currentValue * liveBtc).toFixed(2);
+          case "ethereum":
+            return (currentValue * 2640).toFixed(2);
+          case "tether":
+            return currentValue.toFixed(2);
+          default:
+            return (0).toFixed(2);
+        }
+      })()}
+      )
+    </span>
+  ) : Transaction.type === "withdraw" ? (
+    <span className="text-danger">
+      ($
+      {(() => {
+        // For withdrawals, we'll show the original amount without interest
+        let amount = Math.abs(Transaction.amount);
+        
+        // Convert to USD based on cryptocurrency type
+        switch (Transaction.trxName) {
+          case "bitcoin":
+            return (amount * liveBtc).toFixed(2);
+          case "ethereum":
+            return (amount * 2640).toFixed(2);
+          case "tether":
+            return amount.toFixed(2);
+          default:
+            return (0).toFixed(2);
+        }
+      })()}
+      )
+    </span>
+  ) : null}
+</small>
                                                                             </p>
 
                                                                             {/* <p className="custom-transaction-date-mobile">
