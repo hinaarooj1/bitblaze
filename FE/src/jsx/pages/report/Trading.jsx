@@ -13,7 +13,7 @@ import './style.css'
 import Truncate from 'react-truncate-inside/es';
 import { useTranslation } from 'react-i18next';
 import './trading.css'
-
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'; 
 const AiTrading = () => {
     const { t } = useTranslation()
     const [activeDurationBtc, setActiveDurationBtc] = useState(30);
@@ -559,8 +559,10 @@ const AiTrading = () => {
       let amount = Math.abs(Transaction.amount);
       const tradingTime = Number(Transaction.tradingTime);
       const transactionDate = new Date(Transaction.createdAt);
+      console.log('transactionDate: ', transactionDate);
       const today = new Date();
       const daysPassed = Math.floor((today - transactionDate) / (1000 * 60 * 60 * 24));
+      console.log('daysPassed: ', daysPassed);
       const daysRemaining = Math.max(0, tradingTime - daysPassed);
 
       // Generate consistent daily rates based on transaction date
@@ -597,7 +599,51 @@ const AiTrading = () => {
           default: return "0.00";
         }
       };
-
+      const generateMountainChartData = () => {
+        const data = [{ day: 0, balance: 0, usdValue: 0 }]; // Start at zero
+        
+        if (!amount || amount <= 0) return data;
+      
+        let runningBalance = amount;
+        let previousTrend = 1; // 1=up, -1=down
+        let trendDuration = 0;
+      
+        for (let day = 1; day <= daysPassed; day++) {
+          // Calculate base growth rate (slows over time)
+          const progressRatio = day / tradingTime;
+          const dynamicRate = baseRate * (1 - progressRatio * 0.5); // Rate decreases by 50% over period
+      
+          // Introduce natural gaps (3-7 day trends)
+          if (trendDuration <= 0 || Math.random() < 0.2) {
+            previousTrend *= -1; // Reverse trend
+            trendDuration = 3 + Math.floor(Math.random() * 5); // 3-7 day trends
+          }
+          trendDuration--;
+      
+          // Calculate daily change with volatility
+          const volatility = 0.02 + (progressRatio * 0.03); // Increases over time
+          const randomShift = (Math.random() * 2 - 1) * volatility;
+          const trendDirection = previousTrend * (0.5 + Math.random() * 0.5);
+          
+          const dailyChange = (
+            (dynamicRate / 100) * 
+            runningBalance * 
+            (1 + randomShift) * 
+            trendDirection
+          );
+      
+          runningBalance = Math.max(0, runningBalance + dailyChange);
+          
+          data.push({
+            day,
+            balance: parseFloat(runningBalance.toFixed(8)),
+            usdValue: parseFloat(getUsdValue(runningBalance))
+          });
+        }
+      
+        return data;
+      };
+ 
       return (
         <div className="custom-transaction-card" key={index}>
           <div className="custom-transaction-body">
@@ -606,8 +652,73 @@ const AiTrading = () => {
                 <h6 className="custom-transaction-title">
                 {Transaction.trxName.replace(/\b\w/g, (char) => char.toUpperCase())} Trading
                    {/* ({daysPassed}/{tradingTime} days) */}
+                   {" "}{daysPassed} day(s)
                 </h6>
-                
+                <div className="profit-mountain-chart">
+                <ResponsiveContainer width="100%" height={220}>
+  <AreaChart
+    data={generateMountainChartData()}
+    margin={{ top: 10, right: 5, left: 5, bottom: 5 }}
+  >
+    <defs>
+      <linearGradient id="mountainGradient" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#10B981" stopOpacity={0.8}/>
+        <stop offset="100%" stopColor="#10B981" stopOpacity={0}/>
+      </linearGradient>
+    </defs>
+
+    <CartesianGrid 
+      strokeDasharray="3 3" 
+      stroke="#374151" 
+      horizontal={true}
+      vertical={false}
+    />
+
+    <XAxis
+      dataKey="day"
+      tick={{ fill: '#9CA3AF' }}
+      axisLine={{ stroke: '#4B5563' }}
+    />
+
+    <YAxis
+      domain={[0, (dataMax) => Math.max(dataMax * 1.15, amount * 1.1)]}
+      tick={{ fill: '#9CA3AF' }}
+      tickFormatter={(val) => val.toFixed(4)}
+    />
+
+    <Tooltip
+      contentStyle={{
+        background: '#1F2937',
+        border: 'none',
+        borderRadius: '8px',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+      }}
+      formatter={(value, name) => [
+        name === 'balance' 
+          ? `${Number(value).toFixed(6)} ${Transaction.trxName.toUpperCase()}` 
+          : `$${Number(value).toFixed(2)}`,
+        name === 'balance' ? 'Amount' : 'USD Value'
+      ]}
+    />
+
+    <Area
+      type="basis" // Smoother curves between points
+      dataKey="balance"
+      stroke="#10B981"
+      strokeWidth={2}
+      fill="url(#mountainGradient)"
+      fillOpacity={1}
+      activeDot={{
+        r: 6,
+        stroke: '#059669',
+        strokeWidth: 2,
+        fill: '#D1FAE5'
+      }}
+    />
+  </AreaChart>
+</ResponsiveContainer>
+</div>
+
                 <div className="investment-details">
                   <div className="detail-row">
                     <span className="detail-label">Initial:</span>
