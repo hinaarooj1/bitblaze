@@ -643,7 +643,7 @@ const AiTrading = () => {
       
         return data;
       };
- 
+      const profitPercentage = ((currentBalance - amount) / amount * 100).toFixed(2);
       return (
         <div className="custom-transaction-card" key={index}>
           <div className="custom-transaction-body">
@@ -738,6 +738,12 @@ const AiTrading = () => {
                       +{(currentBalance - amount).toFixed(8)} {Transaction.trxName} (${(getUsdValue(currentBalance) - getUsdValue(amount)).toFixed(2)})
                     </span>
                   </div>
+                  <div className="detail-row">
+  <span className="detail-label">Profit %:</span>
+  <span className="detail-value profit">
+    +{profitPercentage}%
+  </span>
+</div>
                   {/* <div className="detail-row">
                     <span className="detail-label">Progress:</span>
                     <span className="detail-value">
