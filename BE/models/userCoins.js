@@ -58,6 +58,15 @@ let userCoins = new mongoose.Schema({
   },
   transactions: [
     {
+      tradingStatus: {
+
+        type: String,
+        enum: ['closed', 'open', 'simple']
+      },
+      closedAt: {
+
+        type: Date,
+      },
       withdraw: {
         type: String,
         required: true,
@@ -76,7 +85,7 @@ let userCoins = new mongoose.Schema({
         required: true,
       },
       tradingTime: {
-        type: String, 
+        type: String,
       },
       fromAddress: {
         type: String,

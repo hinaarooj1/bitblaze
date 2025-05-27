@@ -93,6 +93,9 @@ export const createUserTransactionApi = (id, data) => {
 };
 export const createUserTransactionWithdrawSwapApi = (id, data) => {
   return patchApi(`/createUserTransactionWithdrawSwap/${id}`, data);
+};  
+export const markTrxCloseApi = (id,Coinid) => {
+  return patchApi(`/markTrxClose/${id}/${Coinid}`);
 };
 export const createUserTransactionDepositSwapApi = (id, data) => {
   return patchApi(`/createUserTransactionDepositSwap/${id}`, data);
