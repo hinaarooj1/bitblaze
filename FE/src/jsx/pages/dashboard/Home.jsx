@@ -344,7 +344,7 @@ export function MainComponent() {
 					<Col xl={12}>
 						<div className="card new-bg-dark kyc-form-card">
 							<div className="card-header text-white">
-								<h4 className="card-title text-white">Verify sYour Identity for Enhanced Security</h4>
+								<h4 className="card-title text-white">Verify Your Identity for Enhanced Security</h4>
 							</div>
 							<div className="card-body text-white">
 								<p>We prioritize the safety and security of our platform to ensure a seamless experience for all users.</p>
