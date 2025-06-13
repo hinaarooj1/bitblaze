@@ -204,74 +204,68 @@ const StocksSec = () => {
                                 </div>
                             ) : (
 
-                              <Row>
-  <Col md={6}>
-    <Card className='maon-00c'>
-      <Card.Header><Card.Title>Buy Assets</Card.Title></Card.Header>
-      <Card.Body>
-        <Form>
-          <Form.Group className="mb-3">
-            <Form.Label>Asset ID</Form.Label>
-            <Form.Control type="text" placeholder="Enter Asset ID" />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Asset Quote</Form.Label>
-            <Form.Control type="text" placeholder="USD" disabled />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Quantity</Form.Label>
-            <Form.Control type="number" defaultValue={1} />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Current Price</Form.Label>
-            <Form.Control type="number" />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Buy Amount</Form.Label>
-            <Form.Control type="number" />
-          </Form.Group>
-          <Button variant="success" type="submit">
-            Buy Asset
-          </Button>
-        </Form>
-      </Card.Body>
-    </Card>
-  </Col>
+                                <div className="  relative w-full    duration-300 rounded-md">
+                                    <div className="flex items-center justify-between p-4">
+                                        <div>
+                                            <p
+                                                className="font-heading text-sm font-medium leading-normal leading-normal uppercase tracking-wider"
+                                                tag="h2"
+                                            >
+                                                {" "}
+                                                All Stocks
+                                            </p>
+                                        </div>
+                                    </div>
+                                    {isLoading && (
+                                        <div className="  p-5">Loading Stocks...</div>
+                                    )}
+                                    {!isLoading && (
+                                        <div className="pt-6 asm">
+                                            <Table   bordered  >
+                                                <thead>
+                                                    <tr>
+                                                        <th>Stock Name</th>
+                                                        <th>Stock Symbol</th>
+                                                        <th>Quantity</th>
+                                                        <th>Total Value</th>
+                                                    </tr>
+                                                </thead>
+                                                {UserTransactions && Array.isArray(UserTransactions) && UserTransactions.length > 0 ? (
+                                                    UserTransactions.map((transaction, index) => (
+                                                        <tbody>
+                                                            <tr key={index}>
+                                                                <td>{transaction.stockName || 'N/A'}</td>
+                                                                <td className="text-center">{transaction.stockSymbol || 'N/A'}</td>
+                                                                <td>{transaction.stockAmount || 'N/A'}</td>
+                                                                <td>
+                                                                    {spValue ? (
+                                                                        <div className="loader-container">
+                                                                            <Spinner animation="border" role="status">
+                                                                                <span className="visually-hidden">Loading...</span>
+                                                                            </Spinner>
+                                                                        </div>
+                                                                    ) : (() => {
+                                                                        const liveValue = liveStockValues[transaction.stockSymbol];
+                                                                        const calculatedValue = parseFloat(liveValue) * parseFloat(transaction.stockAmount);
+                                                                        const formattedValue = isNaN(calculatedValue)
+                                                                            ? parseFloat(transaction.stockValue) * parseFloat(transaction.stockAmount)
+                                                                            : calculatedValue;
+                                                                        return `$${formattedValue.toFixed(3) || 'N/A'}`;
+                                                                    })()}
 
-  <Col md={6}>
-    <Card className='maon-00c'>
-      <Card.Header><Card.Title>Sell Assets</Card.Title></Card.Header>
-      <Card.Body>
-        <Form>
-          <Form.Group className="mb-3">
-            <Form.Label>Asset ID</Form.Label>
-            <Form.Control type="text" defaultValue="ETOR (Etoro Group Ltd - Class A)" />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Asset Quote</Form.Label>
-            <Form.Control type="text" defaultValue="USD" disabled />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Quantity</Form.Label>
-            <Form.Control type="number" defaultValue={1} />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Current Price</Form.Label>
-            <Form.Control type="number" defaultValue={64.98} />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Sell Price</Form.Label>
-            <Form.Control type="number" defaultValue={64.98} />
-          </Form.Group>
-          <Button variant="danger" type="submit">
-            Sell Asset
-          </Button>
-        </Form>
-      </Card.Body>
-    </Card>
-  </Col>
-</Row>
-
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    ))
+                                                ) : (
+                                                    <tr>
+                                                        <td colSpan="4" className="text-center">No stocks available</td>
+                                                    </tr>
+                                                )}
+                                            </Table>
+                                        </div>
+                                    )}
+                                </div>
                             )}
                         </div>
                     </div>

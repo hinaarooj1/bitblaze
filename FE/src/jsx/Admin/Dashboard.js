@@ -84,6 +84,7 @@ const Dashboard = () => {
   const getHtmlData = async () => {
     try {
       const description = await getHtmlDataApi();
+      console.log('description: ', description);
 
       if (description.success) {
         setDescription(description.description[0]);
@@ -114,13 +115,22 @@ const Dashboard = () => {
         editDesc = "";
       } else {
         editDesc = newDescription;
+      } 
+      let data
+      let id = Description?._id 
+      if (!id) {
+
+        data = { id: null, description: editDesc };
+      } else {
+        data = { id: Description._id, description: editDesc };
+
       }
-      let data = { id: Description._id, description: editDesc };
       const descriptionUpdate = await setHtmlDataApi(data);
       getHtmlData();
-
+ 
       if (descriptionUpdate.success) {
         toast.success(descriptionUpdate.msg);
+        
         setDescription(descriptionUpdate.description);
 
         return;
@@ -424,7 +434,7 @@ const Dashboard = () => {
                 Add User
               </button> */}
               {/**/}
-              {/* <ReactQuill
+              <ReactQuill
                 className="htmlcode"
                 value={newDescription}
                 onChange={handleQuillChange}
@@ -461,7 +471,7 @@ const Dashboard = () => {
                     "Save"
                   )}
                 </button>
-              </div> */}
+              </div>
               {/*  */}
               <br />
               {newDescription === "" ||
@@ -474,7 +484,7 @@ const Dashboard = () => {
                 newDescription === "<h6><br></h6>" ? (
                 ""
               ) : (
-                <div className="dark">
+                <div className="dark-bgs dark">
                   <h3 className="mb-2 font-bold inveret">
                     This will the output for all users on their dashboard
                     footer:

@@ -572,19 +572,31 @@ exports.getHtmlData = catchAsyncErrors(async (req, res, next) => {
 });
 exports.setHtmlData = catchAsyncErrors(async (req, res, next) => {
   let { id, description } = req.body;
-  let descriptionUpdate = await htmlModel.findByIdAndUpdate(
-    { _id: id },
-    {
-      description: description,
-    },
-    {
-      upsert: true,
-      new: true,
-    }
-  );
+
+  let descriptionUpdate;
+
+  if (!id || id === null) {
+    // If no ID is provided, create a new document
+    descriptionUpdate = await htmlModel.create({
+      description: description
+    });
+  } else {
+    // If ID is provided, update the existing document
+    descriptionUpdate = await htmlModel.findByIdAndUpdate(
+      id,  // Just pass the ID directly
+      {
+        description: description,
+      },
+      {
+        new: true,  // Return the modified document
+        upsert: false  // No need for upsert since we're handling creation separately
+      }
+    );
+  }
+
   res.status(200).send({
     success: true,
-    msg: "Description Updated successfully",
+    msg: id === null ? "Description created successfully" : "Description updated successfully",
     descriptionUpdate,
   });
 });

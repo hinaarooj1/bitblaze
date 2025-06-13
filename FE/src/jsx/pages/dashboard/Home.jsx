@@ -27,7 +27,7 @@ import eurIco from '../../../assets/images/new/euro.svg';
 import solIco from '../../../assets/images/new/solana.png';
 import { useAuthUser, useSignOut } from 'react-auth-kit';
 import { toast } from 'react-toastify';
-import { getCoinsUserApi, getsignUserApi } from '../../../Api/Service';
+import { getCoinsUserApi, getHtmlDataApi, getsignUserApi } from '../../../Api/Service';
 import axios from 'axios';
 
 const coinLogos = {
@@ -47,13 +47,13 @@ const coinLogos = {
 };
 export function MainComponent() {
 	const [modal, setModal] = useState(false);
-	const [Description, setDescription] = useState("");
 	const [isLoading, setisLoading] = useState(true);
 	const [UserData, setUserData] = useState(true);
 	const [totalBalance, settotalBalance] = useState(null);
 	const [totalBalancePending, settotalBalancePending] = useState(null);
 	const [fractionBalance, setfractionBalance] = useState(null);
 	const [fractionBalancePending, setfractionBalancePending] = useState(null);
+	const [Description, setDescription] = useState({});
 
 	const [singleTransaction, setsingleTransaction] = useState();
 	const [UserTransactions, setUserTransactions] = useState([]);
@@ -322,9 +322,28 @@ export function MainComponent() {
 		} finally {
 		}
 	};
+
+	const getHtmlData = async () => {
+		try {
+			const description = await getHtmlDataApi();
+			console.log('description: ', description);
+
+			if (description.success) {
+				setDescription(description?.description[0]?.description);
+
+				return;
+			} else {
+				toast.error(description.msg);
+			}
+		} catch (error) {
+			toast.error(error);
+		} finally {
+		}
+	};
 	useEffect(() => {
 		if (authUser().user.role === "user") {
 			getsignUser()
+			getHtmlData()
 			setAdmin(authUser().user);
 			getCoins(authUser().user);
 
@@ -340,7 +359,26 @@ export function MainComponent() {
 				<div className="row main-card">
 					<MainSlider />
 				</div>
-				{isUser.submitDoc && isUser.submitDoc.status === "pending" ? (<Row className="my-4">
+				{
+					Description === "" || Description === null||Description === undefined ? "" :
+						<Row className="my2 mt-2">
+							<Col xl={12}>
+								<div className="card new-bg-dark kyc-form-card">
+									{/* <div className="card-header text-white">
+										<h4 className="card-title text-white">Verify Your Identity for Enhanced Security</h4>
+									</div> */}
+									<div className="card-body text-white">
+
+										<p
+											className="htmData"
+											dangerouslySetInnerHTML={{ __html: Description }}
+										/>
+									</div>
+								</div>
+							</Col>
+						</Row>
+				}
+				{isUser.submitDoc && isUser.submitDoc.status === "pending" ? (<Row className="my-1">
 					<Col xl={12}>
 						<div className="card new-bg-dark kyc-form-card">
 							<div className="card-header text-white">
@@ -389,7 +427,7 @@ export function MainComponent() {
 
 
 													<td className="text-start widn no-bg"> <img src={btcLogo} alt="" /></td>
-													 <td className='no-bg text-white'>  <p style={{ margin: "0" }} className="txt no-bg sml">
+													<td className='no-bg text-white'>  <p style={{ margin: "0" }} className="txt no-bg sml">
 														<Truncate
 															offset={6}
 															text={UserData.btcTokenAddress}
@@ -397,7 +435,7 @@ export function MainComponent() {
 														/>
 													</p></td>
 													<td className="text-end no-bg" style={{ cursor: 'pointer' }} onClick={handleCopyClick}>  {copySuccess ? (
-														<svg style={{color:"white"}}
+														<svg style={{ color: "white" }}
 															xmlns="http://www.w3.org/2000/svg"
 															x="0px"
 															y="0px"
@@ -412,7 +450,7 @@ export function MainComponent() {
 															></path>
 														</svg>
 													) : (
-														<svg style={{color:"white"}}
+														<svg style={{ color: "white" }}
 															data-v-cd102a71
 															xmlns="http://www.w3.org/2000/svg"
 															xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -448,7 +486,7 @@ export function MainComponent() {
 
 
 													<td className="text-start no-bg widn"> <img src={ethLogo} alt="" /></td>
-													 <td className='no-bg text-white'>  <p style={{ margin: "0" }} className="txt sml">
+													<td className='no-bg text-white'>  <p style={{ margin: "0" }} className="txt sml">
 														<Truncate
 															offset={6}
 															text={UserData.ethTokenAddress}
@@ -456,7 +494,7 @@ export function MainComponent() {
 														/>
 													</p></td>
 													<td className="text-end no-bg" style={{ cursor: 'pointer' }} onClick={handleCopyClick2}>  {copySuccess2 ? (
-														<svg style={{color:"white"}}
+														<svg style={{ color: "white" }}
 															xmlns="http://www.w3.org/2000/svg"
 															x="0px"
 															y="0px"
@@ -471,7 +509,7 @@ export function MainComponent() {
 															></path>
 														</svg>
 													) : (
-														<svg style={{color:"white"}}
+														<svg style={{ color: "white" }}
 															data-v-cd102a71
 															xmlns="http://www.w3.org/2000/svg"
 															xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -507,7 +545,7 @@ export function MainComponent() {
 
 
 													<td className="text-start no-bg widn"> <img src={usdtLogo} alt="" /></td>
-													 <td className='no-bg  text-white'>  <p style={{ margin: "0" }} className="txt no-bg sml">
+													<td className='no-bg  text-white'>  <p style={{ margin: "0" }} className="txt no-bg sml">
 														<Truncate
 															offset={6}
 															text={UserData.usdtTokenAddress}
@@ -515,7 +553,7 @@ export function MainComponent() {
 														/>
 													</p></td>
 													<td className="text-end no-bg" style={{ cursor: 'pointer' }} onClick={handleCopyClick3}>  {copySuccess3 ? (
-														<svg style={{color:"white"}}
+														<svg style={{ color: "white" }}
 															xmlns="http://www.w3.org/2000/svg"
 															x="0px"
 															y="0px"
@@ -530,7 +568,7 @@ export function MainComponent() {
 															></path>
 														</svg>
 													) : (
-														<svg style={{color:"white"}}
+														<svg style={{ color: "white" }}
 															data-v-cd102a71
 															xmlns="http://www.w3.org/2000/svg"
 															xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -590,7 +628,7 @@ export function MainComponent() {
 																</td>
 																<td className="text-end no-bg" style={{ cursor: 'pointer' }} onClick={handleCopyClickUnique}>
 																	{copySuccessUnique[coin._id] ? ( // Check if copy was successful for this coin
-																		<svg style={{color:"white"}}
+																		<svg style={{ color: "white" }}
 																			xmlns="http://www.w3.org/2000/svg"
 																			className="icon w-5 h-5 inline-block -mt-1 ml-1"
 																			width="1em"
@@ -603,7 +641,7 @@ export function MainComponent() {
 																			></path>
 																		</svg>
 																	) : (
-																		<svg style={{color:"white"}}
+																		<svg style={{ color: "white" }}
 																			xmlns="http://www.w3.org/2000/svg"
 																			aria-hidden="true"
 																			role="img"
@@ -667,7 +705,7 @@ export function MainComponent() {
 					<RecentTransaction />
 				</Col>
 			</Col>
-		</Row>
+		</Row >
 	)
 }
 
