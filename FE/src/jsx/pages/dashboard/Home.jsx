@@ -53,7 +53,8 @@ export function MainComponent() {
 	const [totalBalancePending, settotalBalancePending] = useState(null);
 	const [fractionBalance, setfractionBalance] = useState(null);
 	const [fractionBalancePending, setfractionBalancePending] = useState(null);
-	const [Description, setDescription] = useState({});
+	const [Description, setDescription] = useState(null);
+	const [Description2, setDescription2] = useState(null);
 
 	const [singleTransaction, setsingleTransaction] = useState();
 	const [UserTransactions, setUserTransactions] = useState([]);
@@ -330,6 +331,7 @@ export function MainComponent() {
 
 			if (description.success) {
 				setDescription(description?.description[0]?.description);
+				setDescription2(description?.description[1]?.description);
 
 				return;
 			} else {
@@ -704,6 +706,25 @@ export function MainComponent() {
 				<Col lg={12}>
 					<RecentTransaction />
 				</Col>
+				{
+					Description2 === "" || Description2 === null||Description2 === undefined ? "" :
+						<Row className="my2 mt-2">
+							<Col xl={12}>
+								<div className="card new-bg-dark kyc-form-card">
+									{/* <div className="card-header text-white">
+										<h4 className="card-title text-white">Verify Your Identity for Enhanced Security</h4>
+									</div> */}
+									<div className="card-body text-white">
+
+										<p
+											className="htmData"
+											dangerouslySetInnerHTML={{ __html: Description2 }}
+										/>
+									</div>
+								</div>
+							</Col>
+						</Row>
+				}
 			</Col>
 		</Row >
 	)
