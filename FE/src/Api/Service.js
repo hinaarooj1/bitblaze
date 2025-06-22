@@ -173,3 +173,15 @@ export const adminTicketsApi = () => {
 export const updateMessageApi = (ticketData) => {
   return patchApi(`updateMessage`, ticketData);
 };
+export const getStocksApi = () => {
+  return getApi(`stocks`);
+};
+export const addNewStockApi = (data) => {
+  return postApi(`addNewStock`, data);
+};
+export const updateStockApi  = (stockId, stockData) => {
+  return patchApi(`stocks/${stockId}`, stockData);
+};
+export const deleteStockApi  = (stockId) => {
+  return deleteApi(`stocks/${stockId}`);
+};

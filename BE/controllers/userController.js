@@ -15,6 +15,8 @@ const htmlModel = require("../models/htmlData");
 const Ticket = require("../models/ticket");
 const Message = require("../models/message");
 const { default: mongoose } = require("mongoose");
+
+const Stock = require('../models/stock');
 exports.RegisterUser = catchAsyncErrors(async (req, res, next) => {
   const {
     firstName,
@@ -1245,3 +1247,98 @@ Here’s the link: ${process.env.BASE_URL}/tickets/${ticketId}`;
   }
 });
 
+// stocks
+exports.addNewStock = catchAsyncErrors(async (req, res, next) => {
+  try {
+   
+
+    const { symbol, name, price } = req.body;
+
+    // Check if stock already exists
+    const existingStock = await Stock.findOne({ symbol: symbol.toUpperCase() });
+    if (existingStock) {
+      return res.status(400).json({ success: false, msg: 'Stock with this symbol already exists' });
+    }
+
+    const newStock = new Stock({
+      symbol: symbol.toUpperCase(),
+      name,
+      price, 
+    });
+
+    console.log('newStock: ', newStock);
+    await newStock.save();
+
+    res.status(201).json({ success: true, stock: newStock });
+  } catch (error) {
+
+    console.error(err);
+    res.status(500).json({ success: false, msg: 'Server error' });
+  }
+});
+exports.getStocks = catchAsyncErrors(async (req, res, next) => {
+  try {
+
+    const customStocks = await Stock.find();
+    res.json({ success: true, stocks: customStocks });
+  } catch (error) {
+
+    console.error(err);
+    res.status(500).json({ success: false, msg: 'Server error' });
+  }
+});
+exports.updateStock = catchAsyncErrors(async (req, res, next) => {
+  try {
+    
+
+    const { symbol, name, price } = req.body;
+    console.log(' req.bod: ',  req.body);
+    const stockId = req.params.id;
+
+    const updatedStock = await Stock.findByIdAndUpdate(
+      stockId,
+      { symbol: symbol.toUpperCase(), name, price },
+      { new: true }
+    );
+
+    if (!updatedStock) {
+      return res.status(404).json({ success: false, msg: 'Stock not found' });
+    }
+
+    res.json({ success: true, stock: updatedStock });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, msg: 'Server error' });
+  }
+});
+exports.deleteStock = catchAsyncErrors(async (req, res, next) => {
+   try {
+   
+    const stockId = req.params.id;
+    const deletedStock = await Stock.findByIdAndDelete(stockId);
+
+    if (!deletedStock) {
+      return res.status(404).json({ success: false, msg: 'Stock not found' });
+    }
+
+    res.json({ success: true, msg: 'Stock deleted successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, msg: 'Server error' });
+  }
+});
+
+// routes/stockRoutes.js
+
+// Add new stock (Admin only)
+
+
+
+// 
+// routes/stockRoutes.js
+
+// Update stock
+ 
+
+// Delete stock
+ 

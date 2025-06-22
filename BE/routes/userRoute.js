@@ -26,7 +26,11 @@ const {
   adminTickets,
   getUserTickets, getIndivTicket, RegisterSubAdmin, addUserByEmail,
   applyCreditCard,
-  getNotifications
+  getNotifications,
+  getStocks,
+  addNewStock,
+  deleteStock,
+  updateStock
 } = require("../controllers/userController");
 const { authorizedRoles, } = require("../middlewares/auth");
 const singleUpload = require("../middlewares/multer");
@@ -65,6 +69,10 @@ router.route("/getNotifications").get(getNotifications);
 router.route("/updateNotificationStatus/:id/:status").get(updateNotificationStatus);
 router.route("/getUserTickets/:id").get(getUserTickets);
 router.route("/getIndivTicket/:id/:ticketId").get(getIndivTicket);
+router.route("/stocks").get(getStocks);
+router.route("/stocks/:id").patch(updateStock);
+router.route("/stocks/:id").delete(deleteStock);
+router.route("/addNewStock").post(addNewStock);
 
 
 module.exports = router;
