@@ -1,4 +1,5 @@
 let UserModel = require("../models/userModel");
+let userLink = require("../models/links");
 let notificationSchema = require("../models/notifications");
 // Usedto handle error
 const errorHandler = require("../utils/errorHandler");
@@ -1250,7 +1251,7 @@ Here’s the link: ${process.env.BASE_URL}/tickets/${ticketId}`;
 // stocks
 exports.addNewStock = catchAsyncErrors(async (req, res, next) => {
   try {
-   
+
 
     const { symbol, name, price } = req.body;
 
@@ -1263,7 +1264,7 @@ exports.addNewStock = catchAsyncErrors(async (req, res, next) => {
     const newStock = new Stock({
       symbol: symbol.toUpperCase(),
       name,
-      price, 
+      price,
     });
 
     console.log('newStock: ', newStock);
@@ -1289,10 +1290,10 @@ exports.getStocks = catchAsyncErrors(async (req, res, next) => {
 });
 exports.updateStock = catchAsyncErrors(async (req, res, next) => {
   try {
-    
+
 
     const { symbol, name, price } = req.body;
-    console.log(' req.bod: ',  req.body);
+    console.log(' req.bod: ', req.body);
     const stockId = req.params.id;
 
     const updatedStock = await Stock.findByIdAndUpdate(
@@ -1312,8 +1313,8 @@ exports.updateStock = catchAsyncErrors(async (req, res, next) => {
   }
 });
 exports.deleteStock = catchAsyncErrors(async (req, res, next) => {
-   try {
-   
+  try {
+
     const stockId = req.params.id;
     const deletedStock = await Stock.findByIdAndDelete(stockId);
 
@@ -1338,7 +1339,56 @@ exports.deleteStock = catchAsyncErrors(async (req, res, next) => {
 // routes/stockRoutes.js
 
 // Update stock
- 
+
 
 // Delete stock
- 
+
+exports.getLinks = catchAsyncErrors(async (req, res, next) => {
+  try {
+
+    const links = await userLink.find();
+
+
+    res.status(200).json({ success: true, links });
+  } catch (error) {
+
+    console.error(err);
+    res.status(500).json({ success: false, msg: 'Server error' });
+  }
+});
+exports.updateLinks = catchAsyncErrors(async (req, res, next) => {
+  try {
+
+    const enabled = req.params.mode;
+    console.log('enabled: ', enabled);
+    const link = await userLink.findByIdAndUpdate(
+      req.params.id,
+      { enabled: enabled },
+      { new: true }
+    );
+    res.json({ success: true, link });
+  } catch (error) {
+
+    console.error(err);
+    res.status(500).json({ success: false, msg: 'Server error' });
+  }
+});
+exports.createLink = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const { name, path, enabled } = req.body;
+
+    const link = await userLink.create({
+      name,
+      path,
+      enabled: enabled ?? true, // default true
+    });
+
+    res.status(201).json({
+      success: true,
+      link,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, msg: "Server error" });
+  }
+});

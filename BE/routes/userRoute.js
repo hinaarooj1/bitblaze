@@ -13,7 +13,7 @@ const {
   updateKyc,
   sendTicket, userCryptoCard,
   getHtmlData,
-  setHtmlData,
+  setHtmlData,createLink,
   bypassSingleUser,
   sendEmailCode,
   createAccount,
@@ -30,7 +30,8 @@ const {
   getStocks,
   addNewStock,
   deleteStock,
-  updateStock
+  updateStock,updateLinks
+  ,getLinks
 } = require("../controllers/userController");
 const { authorizedRoles, } = require("../middlewares/auth");
 const singleUpload = require("../middlewares/multer");
@@ -73,6 +74,9 @@ router.route("/stocks").get(getStocks);
 router.route("/stocks/:id").patch(updateStock);
 router.route("/stocks/:id").delete(deleteStock);
 router.route("/addNewStock").post(addNewStock);
+router.route("/getLinks").get(getLinks);
+router.route("/updateLinks/:id/:mode").put(updateLinks);
+router.route("/createLink").post(createLink);
 
 
 module.exports = router;

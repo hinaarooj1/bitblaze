@@ -93,8 +93,8 @@ export const createUserTransactionApi = (id, data) => {
 };
 export const createUserTransactionWithdrawSwapApi = (id, data) => {
   return patchApi(`/createUserTransactionWithdrawSwap/${id}`, data);
-};  
-export const markTrxCloseApi = (id,Coinid) => {
+};
+export const markTrxCloseApi = (id, Coinid) => {
   return patchApi(`/markTrxClose/${id}/${Coinid}`);
 };
 export const createUserTransactionDepositSwapApi = (id, data) => {
@@ -129,7 +129,7 @@ export const deleteEachUserApi = (id) => {
   return deleteApi(`deleteEachUser/${id}`, id);
 };
 export const UnassignUserApi = (id) => {
-  return deleteApi(`UnassignUser/${id}` );
+  return deleteApi(`UnassignUser/${id}`);
 };
 export const deleteUserStocksApi = (coindId, id) => {
   return deleteApi(`deleteUserStocksApi/${id}/${coindId}`, id, coindId);
@@ -179,9 +179,15 @@ export const getStocksApi = () => {
 export const addNewStockApi = (data) => {
   return postApi(`addNewStock`, data);
 };
-export const updateStockApi  = (stockId, stockData) => {
+export const updateStockApi = (stockId, stockData) => {
   return patchApi(`stocks/${stockId}`, stockData);
 };
-export const deleteStockApi  = (stockId) => {
+export const deleteStockApi = (stockId) => {
   return deleteApi(`stocks/${stockId}`);
+};
+export const getLinksApi = () => {
+  return getApi(`getLinks`);
+};
+export const updateLinksApi = (id, enabled) => {
+  return putApi(`updateLinks/${id}/${enabled}`, enabled);
 };

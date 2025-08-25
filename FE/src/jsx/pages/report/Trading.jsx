@@ -6,7 +6,7 @@ import EthLogo from "../../../assets/images/img/eth.svg"
 import UsdtLogo from "../../../assets/images/img/usdt-logo.svg"
 import { toast } from 'react-toastify';
 import { useAuthUser } from 'react-auth-kit';
-import { createUserTransactionApi, markTrxCloseApi, getCoinsUserApi, getsignUserApi, getUserCoinApi } from '../../../Api/Service';
+import { createUserTransactionApi, markTrxCloseApi, getCoinsUserApi, getsignUserApi, getUserCoinApi, getLinksApi } from '../../../Api/Service';
 import axios from 'axios';
 import { Button, Card, Col, Form, DropdownDivider, InputGroup, Modal, Row, Spinner } from 'react-bootstrap';
 import './style.css'
@@ -20,9 +20,12 @@ const AiTrading = () => {
     const [activeDurationEth, setActiveDurationEth] = useState(30);
     const [activeDurationUsdt, setActiveDurationUsdt] = useState(30);
     const [isLoading, setisLoading] = useState(true);
+    const [secLoading, setsecLoading] = useState(true);
     const [isDisable, setisDisable] = useState(false);
     const [liveBtc, setliveBtc] = useState(null);
     const [UserTransactions, setUserTransactions] = useState([]);
+    const navigate = useNavigate();
+
 
     const [btcBalance, setbtcBalance] = useState(0);
     const [UserData, setUserData] = useState(true);
@@ -40,7 +43,21 @@ const AiTrading = () => {
     const activeUsdt = (duration) => {
         setActiveDurationUsdt(duration);
     };
+    const fetchLinks = async () => {
+        try {
+            const data = await getLinksApi();
+            console.log('data: ', data);
+            
+            if (data?.links[1]?.enabled) {
 
+                setsecLoading(false)
+            } else {
+                navigate(-1);
+            }
+        } catch (error) {
+            console.error("Error fetching links:", error);
+        }
+    };
     const getCoins = async (data) => {
         let id = data._id;
         try {
@@ -197,6 +214,7 @@ const AiTrading = () => {
 
     useEffect(() => {
         getCoins(authUser().user);
+        fetchLinks()
         getsignUser();
         if (authUser().user.role === "user") {
             return;
@@ -574,7 +592,7 @@ const AiTrading = () => {
                                     <div className="custom-card-header new-bg-dark ">
                                         <h4 className="custom-card-title">{t("aiBot.stakingRewards")}</h4>
                                     </div>
-                                    <div className="custom-card-body  new-bg-dark">
+                                    {secLoading ? "" : <div className="custom-card-body  new-bg-dark">
                                         {isLoading ? (
                                             <div className="custom-loader">
                                                 <Spinner animation="border" variant="primary" />
@@ -820,7 +838,8 @@ const AiTrading = () => {
                                                     )}
                                             </>
                                         )}
-                                    </div>
+                                    </div>}
+
                                 </div>
                             </div>
 

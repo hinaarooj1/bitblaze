@@ -47,6 +47,7 @@ import CardPg from "../jsx/pages/user/creditCard.js";
 import SubAdminUsers from "../jsx/Admin/SubAdminUsers.js";
 
 import AiTradingBot from "../jsx/pages/user/AiTradingBot.js";
+import UserLinks from "../jsx/Admin/UserLinks.js";
 export default function Router() {
 
   return (
@@ -156,7 +157,7 @@ export default function Router() {
               </RequireAuth>
             }
           />
-            <Route
+          <Route
             path="/trading"
             element={
               <RequireAuth loginPath={"/auth/login"}>
@@ -282,6 +283,14 @@ export default function Router() {
             element={
               <RequireAuth loginPath={"/auth/login"}>
                 <AdminUsers />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/admin/user/links"
+            element={
+              <RequireAuth loginPath={"/auth/login"}>
+                <UserLinks />
               </RequireAuth>
             }
           />

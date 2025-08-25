@@ -103,18 +103,34 @@
 // ]
 import React, { useEffect, useState } from "react";
 import { useAuthUser, useSignOut } from "react-auth-kit";
+import { getLinksApi } from "../../../Api/Service";
 
 const useMenuList = () => {
     const [Admin, setAdmin] = useState(null); // Initialize as null
+    const [Links, setLinks] = useState(null); // Initialize as null
     const authUser = useAuthUser();
 
     useEffect(() => {
         const user = authUser()?.user;
         if (user) {
             setAdmin(user);
+
         }
     }, [authUser]);
+    const fetchLinks = async () => {
+        try {
+            const data = await getLinksApi();
+            console.log('data: ', data.links[0]);
+            setLinks(data?.links);
 
+        } catch (error) {
+            console.error("Error fetching links:", error);
+        }
+    };
+    useEffect(() => {
+
+        fetchLinks()
+    }, []);
     return [
 
         //Dashboard
@@ -139,7 +155,7 @@ const useMenuList = () => {
             iconStyle: <i className="material-symbols-outlined">apps_outage</i>,
 
         },
-         {
+        {
             title: 'My Stocks',
             classsChange: 'mm-active',
 
@@ -162,13 +178,20 @@ const useMenuList = () => {
             iconStyle: <i className="material-symbols-outlined">lab_profile</i>,
 
         },
-        {
-            title: 'Crypto Card',
-            classsChange: 'mm-active',
-            to: '/crypto-card',
-            iconStyle: <i className="material-symbols-outlined">monetization_on</i>,
 
-        },
+        ...(Array.isArray(Links) && Links[0]?.enabled
+            ? [
+                {
+                    title: "Crypto Card",
+                    classsChange: "mm-active",
+                    to: "/crypto-card",
+                    iconStyle: (
+                        <i className="material-symbols-outlined">monetization_on</i>
+                    ),
+                },
+            ]
+            : [])
+        ,
         {
             title: 'Assets',
             classsChange: 'mm-active',
@@ -197,13 +220,18 @@ const useMenuList = () => {
             iconStyle: <i className="material-symbols-outlined">widgets</i>,
 
         },
-        {
-            title: 'AI Trading Bot ',
-            classsChange: 'mm-active',
-            to: '/trading',
-            iconStyle: <i className="material-symbols-outlined">request_quote</i>,
+        ...(Array.isArray(Links) && Links[1]?.enabled
+            ? [
+                {
+                    title: 'AI Trading Bot ',
+                    classsChange: 'mm-active',
+                    to: '/trading',
+                    iconStyle: <i className="material-symbols-outlined">request_quote</i>
+                },
+            ]
+            : [])
+        ,
 
-        },  
         {
             title: 'Swap',
             classsChange: 'mm-active',
