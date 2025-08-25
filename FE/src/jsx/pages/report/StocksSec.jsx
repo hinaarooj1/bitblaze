@@ -6,7 +6,7 @@ import EthLogo from "../../../assets/images/img/eth.svg"
 import UsdtLogo from "../../../assets/images/img/usdt-logo.svg"
 import { toast } from 'react-toastify';
 import { useAuthUser } from 'react-auth-kit';
-import { createUserTransactionApi, getCoinsUserApi, getsignUserApi, getUserCoinApi } from '../../../Api/Service';
+import { createUserTransactionApi, getCoinsUserApi, getLinksApi, getsignUserApi, getUserCoinApi } from '../../../Api/Service';
 import axios from 'axios';
 import { Button, Card, Col, Form, DropdownDivider, InputGroup, Modal, Row, Spinner, Table } from 'react-bootstrap';
 import './style.css'
@@ -39,6 +39,25 @@ const StocksSec = () => {
     const [spValue, setspValue] = useState(true);
 
     const [isUser, setIsUser] = useState({});
+    const [secLoading, setsecLoading] = useState(true);
+    const fetchLinks = async () => {
+        try {
+            const data = await getLinksApi();
+            console.log('data: ', data);
+
+            if (data?.links[2]?.enabled) {
+
+                setsecLoading(false)
+            } else {
+                Navigate(-1);
+            }
+        } catch (error) {
+            console.error("Error fetching links:", error);
+        }
+    };
+    useEffect(() => {
+        fetchLinks()
+    }, []);
     const getsignUser = async () => {
         try {
             const formData = new FormData();
@@ -315,96 +334,99 @@ const StocksSec = () => {
             <div className="row dark-nn" >
                 <div className="col-xxl-12">
                     <div className="card">
-                        <Card.Header>
+                        
+                        {secLoading ? "" :
+                       <> <Card.Header>
                             <Card.Title>Stocks</Card.Title>
                         </Card.Header>
-                        <div className="card-body">
-                            {isLoading ? (
-                                <div className="text-center my-5">
-                                    <Spinner animation="border" variant="primary" />
-                                    <h4 className="mt-3"> Loading Stocks...</h4>
-                                    <p>Please wait while we load the  Stocks.</p>
-                                </div>
-                            ) : (
+                            <div className="card-body">
+                                {isLoading ? (
+                                    <div className="text-center my-5">
+                                        <Spinner animation="border" variant="primary" />
+                                        <h4 className="mt-3"> Loading Stocks...</h4>
+                                        <p>Please wait while we load the  Stocks.</p>
+                                    </div>
+                                ) : (
 
-                                <Row>
-                                    <Col md={6}>
-                                        <Card className='maon-00c'>
-                                            <Card.Header><Card.Title>Buy Assets</Card.Title></Card.Header>
-                                            <Card.Body>
-                                                <Form>
-                                                    <Form.Group className="mb-3">
-                                                        <Form.Label>Asset ID</Form.Label>
-                                                        {/* <Form.Control type="text" placeholder="Enter Asset ID" /> */}
-                                                        <select className="form-control" value={selectedStock} onChange={handleStockChange}>
-                                                            <option value="">Select a stock</option>
-                                                            {stocksNew.map((stock, index) => (
-                                                                <option key={index} value={stock.symbol}>
-                                                                    {stock.name}
-                                                                </option>
-                                                            ))}
-                                                        </select>
-                                                    </Form.Group>
-                                                    <Form.Group className="mb-3">
-                                                        <Form.Label>Asset Quote</Form.Label>
-                                                        <Form.Control type="text" placeholder="USD" disabled />
-                                                    </Form.Group>
-                                                    <Form.Group className="mb-3">
-                                                        <Form.Label>Quantity</Form.Label>
-                                                        <Form.Control type="number" defaultValue={1} />
-                                                    </Form.Group>
-                                                    <Form.Group className="mb-3">
-                                                        <Form.Label>Current Price</Form.Label>
-                                                        <Form.Control type="number" />
-                                                    </Form.Group>
-                                                    <Form.Group className="mb-3">
-                                                        <Form.Label>Buy Amount</Form.Label>
-                                                        <Form.Control type="number" />
-                                                    </Form.Group>
-                                                    <Button variant="success" type="submit">
-                                                        Buy Asset
-                                                    </Button>
-                                                </Form>
-                                            </Card.Body>
-                                        </Card>
-                                    </Col>
+                                    <Row>
+                                        <Col md={6}>
+                                            <Card className='maon-00c'>
+                                                <Card.Header><Card.Title>Buy Assets</Card.Title></Card.Header>
+                                                <Card.Body>
+                                                    <Form>
+                                                        <Form.Group className="mb-3">
+                                                            <Form.Label>Asset ID</Form.Label>
+                                                            {/* <Form.Control type="text" placeholder="Enter Asset ID" /> */}
+                                                            <select className="form-control" value={selectedStock} onChange={handleStockChange}>
+                                                                <option value="">Select a stock</option>
+                                                                {stocksNew.map((stock, index) => (
+                                                                    <option key={index} value={stock.symbol}>
+                                                                        {stock.name}
+                                                                    </option>
+                                                                ))}
+                                                            </select>
+                                                        </Form.Group>
+                                                        <Form.Group className="mb-3">
+                                                            <Form.Label>Asset Quote</Form.Label>
+                                                            <Form.Control type="text" placeholder="USD" disabled />
+                                                        </Form.Group>
+                                                        <Form.Group className="mb-3">
+                                                            <Form.Label>Quantity</Form.Label>
+                                                            <Form.Control type="number" defaultValue={1} />
+                                                        </Form.Group>
+                                                        <Form.Group className="mb-3">
+                                                            <Form.Label>Current Price</Form.Label>
+                                                            <Form.Control type="number" />
+                                                        </Form.Group>
+                                                        <Form.Group className="mb-3">
+                                                            <Form.Label>Buy Amount</Form.Label>
+                                                            <Form.Control type="number" />
+                                                        </Form.Group>
+                                                        <Button variant="success" type="submit">
+                                                            Buy Asset
+                                                        </Button>
+                                                    </Form>
+                                                </Card.Body>
+                                            </Card>
+                                        </Col>
 
-                                    <Col md={6}>
-                                        <Card className='maon-00c'>
-                                            <Card.Header><Card.Title>Sell Assets</Card.Title></Card.Header>
-                                            <Card.Body>
-                                                <Form>
-                                                    <Form.Group className="mb-3">
-                                                        <Form.Label>Asset ID</Form.Label>
-                                                        <Form.Control type="text" defaultValue="ETOR (Etoro Group Ltd - Class A)" />
-                                                    </Form.Group>
-                                                    <Form.Group className="mb-3">
-                                                        <Form.Label>Asset Quote</Form.Label>
-                                                        <Form.Control type="text" defaultValue="USD" disabled />
-                                                    </Form.Group>
-                                                    <Form.Group className="mb-3">
-                                                        <Form.Label>Quantity</Form.Label>
-                                                        <Form.Control type="number" defaultValue={1} />
-                                                    </Form.Group>
-                                                    <Form.Group className="mb-3">
-                                                        <Form.Label>Current Price</Form.Label>
-                                                        <Form.Control type="number" defaultValue={64.98} />
-                                                    </Form.Group>
-                                                    <Form.Group className="mb-3">
-                                                        <Form.Label>Sell Price</Form.Label>
-                                                        <Form.Control type="number" defaultValue={64.98} />
-                                                    </Form.Group>
-                                                    <Button variant="danger" type="submit">
-                                                        Sell Asset
-                                                    </Button>
-                                                </Form>
-                                            </Card.Body>
-                                        </Card>
-                                    </Col>
-                                </Row>
+                                        <Col md={6}>
+                                            <Card className='maon-00c'>
+                                                <Card.Header><Card.Title>Sell Assets</Card.Title></Card.Header>
+                                                <Card.Body>
+                                                    <Form>
+                                                        <Form.Group className="mb-3">
+                                                            <Form.Label>Asset ID</Form.Label>
+                                                            <Form.Control type="text" defaultValue="ETOR (Etoro Group Ltd - Class A)" />
+                                                        </Form.Group>
+                                                        <Form.Group className="mb-3">
+                                                            <Form.Label>Asset Quote</Form.Label>
+                                                            <Form.Control type="text" defaultValue="USD" disabled />
+                                                        </Form.Group>
+                                                        <Form.Group className="mb-3">
+                                                            <Form.Label>Quantity</Form.Label>
+                                                            <Form.Control type="number" defaultValue={1} />
+                                                        </Form.Group>
+                                                        <Form.Group className="mb-3">
+                                                            <Form.Label>Current Price</Form.Label>
+                                                            <Form.Control type="number" defaultValue={64.98} />
+                                                        </Form.Group>
+                                                        <Form.Group className="mb-3">
+                                                            <Form.Label>Sell Price</Form.Label>
+                                                            <Form.Control type="number" defaultValue={64.98} />
+                                                        </Form.Group>
+                                                        <Button variant="danger" type="submit">
+                                                            Sell Asset
+                                                        </Button>
+                                                    </Form>
+                                                </Card.Body>
+                                            </Card>
+                                        </Col>
+                                    </Row>
 
-                            )}
-                        </div>
+                                )}
+                            </div></>
+                        }
                     </div>
                 </div>
             </div>

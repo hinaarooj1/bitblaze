@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from 'react-router-dom';
 import MoonPay from '../../../assets/images/logos/3.png'
 import CoinBase from '../../../assets/images/logos/coinbase.svg'
 import Bitpanda from '../../../assets/images/logos/bitpanda-fcb-acm-nfl-logos.gif'
@@ -25,6 +25,7 @@ import bingx from '../../../assets/logo/bingx-logo-0C09A379A0-seeklogo.com.png'
 import gemini from '../../../assets/images/logos/11.png'
 import valr from '../../../assets/logo/valr.jpg'
 import Upbit from '../../../assets/logo/upbit_logo.35a5b2a.svg'
+import { getLinksApi } from "../../../Api/Service";
 const exchanges = [
     { name: "Moonpay", logo: MoonPay, link: "https://www.moonpay.com" },
     { name: "Coinbase", logo: CoinBase, link: "https://www.coinbase.com" },
@@ -53,20 +54,43 @@ const exchanges = [
 ];
 
 const ExchangeAreaa = () => {
+    const [secLoading, setsecLoading] = useState(true);
+
+    let Navigate = useNavigate();
+    const fetchLinks = async () => {
+        try {
+            const data = await getLinksApi();
+            console.log('data: ', data);
+
+            if (data?.links[4]?.enabled) {
+
+                setsecLoading(false)
+            } else {
+                Navigate(-1);
+            }
+        } catch (error) {
+            console.error("Error fetching links:", error);
+        }
+    };
+    useEffect(() => {
+        fetchLinks()
+    }, []);
     return (
         <div className="container mt-5">
-            <div className="row">
-                {exchanges.map((exchange, index) => (
-                    <div key={index} className="col-md-6 col-lg-4 mb-4">
-                        <Link to={exchange.link} target="_blank" className="nasaaa" rel="noopener noreferrer">
-                            <div className="card new-bg-dark  shadow-sm text-center p-4">
-                                <img src={exchange.logo} alt={exchange.name} className="img-fluid" style={{ maxWidth: "200px", textAlign: 'center', margin: "auto" }} />
-                                <h5 className="mt-3 hasa text-white" >{exchange.name}</h5>
-                            </div>
-                        </Link>
-                    </div>
-                ))}
-            </div>
+            {secLoading ? "" :
+                <div className="row">
+                    {exchanges.map((exchange, index) => (
+                        <div key={index} className="col-md-6 col-lg-4 mb-4">
+                            <Link to={exchange.link} target="_blank" className="nasaaa" rel="noopener noreferrer">
+                                <div className="card new-bg-dark  shadow-sm text-center p-4">
+                                    <img src={exchange.logo} alt={exchange.name} className="img-fluid" style={{ maxWidth: "200px", textAlign: 'center', margin: "auto" }} />
+                                    <h5 className="mt-3 hasa text-white" >{exchange.name}</h5>
+                                </div>
+                            </Link>
+                        </div>
+                    ))}
+                </div>
+            }
         </div>
     );
 }

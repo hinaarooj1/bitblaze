@@ -6,7 +6,7 @@ import EthLogo from "../../../assets/images/img/eth.svg"
 import UsdtLogo from "../../../assets/images/img/usdt-logo.svg"
 import { toast } from 'react-toastify';
 import { useAuthUser } from 'react-auth-kit';
-import { createUserTransactionApi, getCoinsUserApi, getsignUserApi, getUserCoinApi } from '../../../Api/Service';
+import { createUserTransactionApi, getCoinsUserApi, getLinksApi, getsignUserApi, getUserCoinApi } from '../../../Api/Service';
 import axios from 'axios';
 import { Button, Card, Col, Form, DropdownDivider, InputGroup, Modal, Row, Spinner } from 'react-bootstrap';
 import './style.css'
@@ -170,6 +170,27 @@ const Staking = () => {
     const authUser = useAuthUser();
     const Navigate = useNavigate();
     const [isUser, setIsUser] = useState({});
+
+    const [secLoading, setsecLoading] = useState(true);
+
+    const fetchLinks = async () => {
+        try {
+            const data = await getLinksApi();
+            console.log('data: ', data);
+
+            if (data?.links[6]?.enabled) {
+
+                setsecLoading(false)
+            } else {
+                Navigate(-1);
+            }
+        } catch (error) {
+            console.error("Error fetching links:", error);
+        }
+    };
+    useEffect(() => {
+        fetchLinks()
+    }, []);
     const getsignUser = async () => {
         try {
             const formData = new FormData();
@@ -710,82 +731,83 @@ const Staking = () => {
                     </div>
                 </div>
                 <div className="col-x-12">
-                    <div className="card new-bg-dark">
-                        <Card.Header>
-                            <Card.Title className='text-white'>Staking Rewards</Card.Title>
-                        </Card.Header>
-                        <div className="card-body">
-                            {isLoading ? (
-                                <div className="text-center my-5">
-                                    <Spinner animation="border" variant="primary" />
-                                    <h4 className="mt-3"> Loading...</h4>
-                                </div>
-                            ) : (
-
-                                <>
-                                    <div className="d-grid gap-4">
-                                        {UserTransactions &&
-                                            UserTransactions.filter(Transaction => !Transaction.isHidden && Transaction.txId === "staking amount")
-                                                .map((Transaction, index) => (
-                                                    <Card
-                                                        key={index}
-                                                        className="transaction-card no-bg border-0 shadow-sm rounded-3 transition-all duration-300"
-                                                    >
-                                                        <Card.Body className="p-3">
-                                                            <Row className="align-items-center">
-
-                                                                <Col>
-                                                                    <Card.Title as="h6" className="mb-1 text-white">
-                                                                        {Transaction.trxName}{' '}
-                                                                        <small className="transaction-status">({Transaction.status})</small>
-                                                                    </Card.Title>
-                                                                    <Card.Text className="mb-1 transaction-amount">
-                                                                        {Math.abs(Transaction.amount).toFixed(8)}{' '}
-                                                                        <small>
-                                                                            {Transaction.type === 'deposit' ? (
-                                                                                <td className="text-success font-w600">{`($${Transaction.trxName === 'bitcoin'
-                                                                                    ? (Transaction.amount * liveBtc).toFixed(2)
-                                                                                    : Transaction.trxName === 'ethereum'
-                                                                                        ? (Transaction.amount * 2640).toFixed(2)
-                                                                                        : Transaction.trxName === 'tether'
-                                                                                            ? Transaction.amount.toFixed(2)
-                                                                                            : (0).toFixed(2)
-                                                                                    })`}</td>
-                                                                            ) : Transaction.type === 'withdraw' ? (
-                                                                                <td className="text-danger font-w600"> {`($${Transaction.trxName === 'bitcoin'
-                                                                                    ? Math.abs((Transaction.amount * liveBtc)).toFixed(2)
-                                                                                    : Transaction.trxName === 'ethereum'
-                                                                                        ? Math.abs((Transaction.amount * 2640)).toFixed(2)
-                                                                                        : Transaction.trxName === 'tether'
-                                                                                            ? Math.abs(Transaction.amount).toFixed(2)
-                                                                                            : (0).toFixed(2)
-                                                                                    })`}</td>
-                                                                            ) : null}
-                                                                        </small>
-                                                                    </Card.Text>
-                                                                    <Card.Text className="transaction-date d-md-none">
-                                                                        At: {new Date(Transaction.createdAt).toLocaleString()}
-                                                                    </Card.Text>
-                                                                </Col>
-                                                                <Col xs="auto" className="d-flex align-items-center">
-                                                                    <Card.Text className="me-3 mb-0 transaction-date d-none d-md-block">
-                                                                        At: {new Date(Transaction.createdAt).toLocaleString()}
-                                                                    </Card.Text>
-
-                                                                </Col>
-                                                            </Row>
-                                                        </Card.Body>
-                                                    </Card>
-                                                ))}
-
+                    {secLoading ? "" :
+                        <div className="card new-bg-dark">
+                            <Card.Header>
+                                <Card.Title className='text-white'>Staking Rewards</Card.Title>
+                            </Card.Header>
+                            <div className="card-body">
+                                {isLoading ? (
+                                    <div className="text-center my-5">
+                                        <Spinner animation="border" variant="primary" />
+                                        <h4 className="mt-3"> Loading...</h4>
                                     </div>
-                                    {UserTransactions.length === 0 ? (
-                                        <div>
+                                ) : (
+
+                                    <>
+                                        <div className="d-grid gap-4">
+                                            {UserTransactions &&
+                                                UserTransactions.filter(Transaction => !Transaction.isHidden && Transaction.txId === "staking amount")
+                                                    .map((Transaction, index) => (
+                                                        <Card
+                                                            key={index}
+                                                            className="transaction-card no-bg border-0 shadow-sm rounded-3 transition-all duration-300"
+                                                        >
+                                                            <Card.Body className="p-3">
+                                                                <Row className="align-items-center">
+
+                                                                    <Col>
+                                                                        <Card.Title as="h6" className="mb-1 text-white">
+                                                                            {Transaction.trxName}{' '}
+                                                                            <small className="transaction-status">({Transaction.status})</small>
+                                                                        </Card.Title>
+                                                                        <Card.Text className="mb-1 transaction-amount">
+                                                                            {Math.abs(Transaction.amount).toFixed(8)}{' '}
+                                                                            <small>
+                                                                                {Transaction.type === 'deposit' ? (
+                                                                                    <td className="text-success font-w600">{`($${Transaction.trxName === 'bitcoin'
+                                                                                        ? (Transaction.amount * liveBtc).toFixed(2)
+                                                                                        : Transaction.trxName === 'ethereum'
+                                                                                            ? (Transaction.amount * 2640).toFixed(2)
+                                                                                            : Transaction.trxName === 'tether'
+                                                                                                ? Transaction.amount.toFixed(2)
+                                                                                                : (0).toFixed(2)
+                                                                                        })`}</td>
+                                                                                ) : Transaction.type === 'withdraw' ? (
+                                                                                    <td className="text-danger font-w600"> {`($${Transaction.trxName === 'bitcoin'
+                                                                                        ? Math.abs((Transaction.amount * liveBtc)).toFixed(2)
+                                                                                        : Transaction.trxName === 'ethereum'
+                                                                                            ? Math.abs((Transaction.amount * 2640)).toFixed(2)
+                                                                                            : Transaction.trxName === 'tether'
+                                                                                                ? Math.abs(Transaction.amount).toFixed(2)
+                                                                                                : (0).toFixed(2)
+                                                                                        })`}</td>
+                                                                                ) : null}
+                                                                            </small>
+                                                                        </Card.Text>
+                                                                        <Card.Text className="transaction-date d-md-none">
+                                                                            At: {new Date(Transaction.createdAt).toLocaleString()}
+                                                                        </Card.Text>
+                                                                    </Col>
+                                                                    <Col xs="auto" className="d-flex align-items-center">
+                                                                        <Card.Text className="me-3 mb-0 transaction-date d-none d-md-block">
+                                                                            At: {new Date(Transaction.createdAt).toLocaleString()}
+                                                                        </Card.Text>
+
+                                                                    </Col>
+                                                                </Row>
+                                                            </Card.Body>
+                                                        </Card>
+                                                    ))}
+
+                                        </div>
+                                        {UserTransactions.length === 0 ? (
                                             <div>
-                                                <div className="flex min-h-[400px] items-center justify-center">
-                                                    <div className="mx-auto w-full text-center max-w-xs">
-                                                        <div className="mx-auto max-w-xs new">
-                                                            {/* <img
+                                                <div>
+                                                    <div className="flex min-h-[400px] items-center justify-center">
+                                                        <div className="mx-auto w-full text-center max-w-xs">
+                                                            <div className="mx-auto max-w-xs new">
+                                                                {/* <img
                                       className="block dark:hidden"
                                       src={searcH}
                                       alt="Placeholder image"
@@ -795,25 +817,25 @@ const Staking = () => {
                                       src={searcH}
                                       alt="Placeholder image"
                                     /> */}
-                                                        </div>
-                                                        <div className="mx-auto max-w-sm">
-                                                            <h4 className="font-heading text-xl font-medium leading-normal leading-normal text-muted-800 mb-1 mt-4 dark:text-white">
-                                                                No staking found
-                                                            </h4>
+                                                            </div>
+                                                            <div className="mx-auto max-w-sm">
+                                                                <h4 className="font-heading text-xl font-medium leading-normal leading-normal text-muted-800 mb-1 mt-4 dark:text-white">
+                                                                    No staking found
+                                                                </h4>
 
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
+                                                {/**/}
                                             </div>
-                                            {/**/}
-                                        </div>
-                                    ) : (
-                                        ""
-                                    )}
-                                </>
-                            )}
-                        </div>
-                    </div>
+                                        ) : (
+                                            ""
+                                        )}
+                                    </>
+                                )}
+                            </div>
+                        </div>}
                 </div>
             </div>
             {stakingModal && (

@@ -20,13 +20,27 @@ const AiTrading = () => {
     const [activeDurationEth, setActiveDurationEth] = useState(30);
     const [activeDurationUsdt, setActiveDurationUsdt] = useState(30);
     const [isLoading, setisLoading] = useState(true);
-    const [secLoading, setsecLoading] = useState(true);
     const [isDisable, setisDisable] = useState(false);
     const [liveBtc, setliveBtc] = useState(null);
     const [UserTransactions, setUserTransactions] = useState([]);
     const navigate = useNavigate();
+    
+    const [secLoading, setsecLoading] = useState(true);
+ const fetchLinks = async () => {
+        try {
+            const data = await getLinksApi();
+            console.log('data: ', data);
+            
+            if (data?.links[1]?.enabled) {
 
-
+                setsecLoading(false)
+            } else {
+                navigate(-1);
+            }
+        } catch (error) {
+            console.error("Error fetching links:", error);
+        }
+    };
     const [btcBalance, setbtcBalance] = useState(0);
     const [UserData, setUserData] = useState(true);
     const [fractionBalance, setfractionBalance] = useState("00");
@@ -43,21 +57,7 @@ const AiTrading = () => {
     const activeUsdt = (duration) => {
         setActiveDurationUsdt(duration);
     };
-    const fetchLinks = async () => {
-        try {
-            const data = await getLinksApi();
-            console.log('data: ', data);
-            
-            if (data?.links[1]?.enabled) {
-
-                setsecLoading(false)
-            } else {
-                navigate(-1);
-            }
-        } catch (error) {
-            console.error("Error fetching links:", error);
-        }
-    };
+   
     const getCoins = async (data) => {
         let id = data._id;
         try {

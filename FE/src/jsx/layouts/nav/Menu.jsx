@@ -155,22 +155,33 @@ const useMenuList = () => {
             iconStyle: <i className="material-symbols-outlined">apps_outage</i>,
 
         },
-        {
-            title: 'My Stocks',
-            classsChange: 'mm-active',
+        ...(Array.isArray(Links) && Links[2]?.enabled
+            ? [
+                {
+                    title: 'My Stocks',
+                    classsChange: 'mm-active',
 
 
-            to: Admin ? `/stocks/${Admin._id}` : '#',
-            iconStyle: <i className="material-symbols-outlined">table</i>,
+                    to: Admin ? `/stocks/${Admin._id}` : '#',
+                    iconStyle: <i className="material-symbols-outlined">table</i>,
+                },
+            ]
+            : [])
+        ,
 
-        },
-        {
-            title: 'Documents',
-            classsChange: 'mm-active',
-            to: '/all-files',
-            iconStyle: <i className="material-symbols-outlined">request_quote</i>,
+        ...(Array.isArray(Links) && Links[3]?.enabled
+            ? [
+                {
+                    title: 'Documents',
+                    classsChange: 'mm-active',
+                    to: '/all-files',
+                    iconStyle: <i className="material-symbols-outlined">request_quote</i>,
+                },
+            ]
+            : [])
+        ,
 
-        },
+
         {
             title: 'Legal',
             classsChange: 'mm-active',
@@ -199,27 +210,46 @@ const useMenuList = () => {
             iconStyle: <i className="material-symbols-outlined">table_chart</i>,
 
         },
-        {
-            title: 'Exchanges',
-            classsChange: 'mm-active',
-            to: '/exchanges',
-            iconStyle: <span class="fa-solid fa-arrow-right-arrow-left faris"></span>,
+        ...(Array.isArray(Links) && Links[4]?.enabled
+            ? [
+                {
+                    title: 'Exchanges',
+                    classsChange: 'mm-active',
+                    to: '/exchanges',
+                    iconStyle: <span class="fa-solid fa-arrow-right-arrow-left faris"></span>,
 
-        },
-        {
-            title: 'Payment Methods',
-            classsChange: 'mm-active',
-            to: '/account',
-            iconStyle: <i className="material-symbols-outlined">monetization_on</i>,
+                },
+            ]
+            : [])
+        ,
+        ...(Array.isArray(Links) && Links[5]?.enabled
+            ? [
+                {
+                    title: 'Payment Methods',
+                    classsChange: 'mm-active',
+                    to: '/account',
+                    iconStyle: <i className="material-symbols-outlined">monetization_on</i>,
+                },
+            ]
+            : [])
+        ,
+        ...(Array.isArray(Links) && Links[6]?.enabled
+            ? [
+                {
 
-        },
-        {
-            title: 'Staking',
-            classsChange: 'mm-active',
-            to: '/staking',
-            iconStyle: <i className="material-symbols-outlined">widgets</i>,
+                    title: 'Staking',
+                    classsChange: 'mm-active',
+                    to: '/staking',
+                    iconStyle: <i className="material-symbols-outlined">widgets</i>,
 
-        },
+                },
+            ]
+            : [])
+        ,
+
+
+
+
         ...(Array.isArray(Links) && Links[1]?.enabled
             ? [
                 {
@@ -232,13 +262,23 @@ const useMenuList = () => {
             : [])
         ,
 
-        {
-            title: 'Swap',
-            classsChange: 'mm-active',
-            to: '/swap',
-            iconStyle: <i className="material-symbols-outlined">monitoring</i>,
+        ...(Array.isArray(Links) && Links[7]?.enabled
+            ? [
+                {
 
-        },
+                    title: 'Swap',
+                    classsChange: 'mm-active',
+                    to: '/swap',
+                    iconStyle: <i className="material-symbols-outlined">monitoring</i>,
+
+
+                },
+            ]
+            : [])
+        ,
+
+
+
         {
             title: 'Transactions',
             classsChange: 'mm-active',
