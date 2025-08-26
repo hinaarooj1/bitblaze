@@ -191,3 +191,6 @@ export const getLinksApi = () => {
 export const updateLinksApi = (id, enabled) => {
   return putApi(`updateLinks/${id}/${enabled}`, enabled);
 };
+export const deleteTicketApi = (id) => {
+  return deleteApi(`deleteTicket/${id}`,);
+};

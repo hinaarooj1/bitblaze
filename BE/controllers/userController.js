@@ -1392,3 +1392,19 @@ exports.createLink = catchAsyncErrors(async (req, res, next) => {
     res.status(500).json({ success: false, msg: "Server error" });
   }
 });
+exports.deleteTicket = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    console.log('id: ', id);
+
+    const ticketStatus = await Ticket.findByIdAndDelete(id);
+
+    res.status(201).json({
+      success: true,
+      ticketStatus,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, msg: "Server error" });
+  }
+});

@@ -9,7 +9,7 @@ const {
   updateSingleUser,
   verifySingleUser,
   getsignUser,
-  verifyToken,
+  verifyToken,deleteTicket,
   updateKyc,
   sendTicket, userCryptoCard,
   getHtmlData,
@@ -77,6 +77,7 @@ router.route("/addNewStock").post(addNewStock);
 router.route("/getLinks").get(getLinks);
 router.route("/updateLinks/:id/:mode").put(updateLinks);
 router.route("/createLink").post(createLink);
+router.route("/deleteTicket/:id").delete(deleteTicket);
 
 
 module.exports = router;
